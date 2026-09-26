@@ -2,11 +2,11 @@
 
 ---
 ## Development Team ##
-Business Client:  Kody Verhulp
+Business Client:  Ben
 <br/>
 Lead Developer:  Kody Verhulp
 <br/>
-Quality Control:  [Name]
+Quality Control:  Nick
 <br/>
 ---
 ## Description ##
