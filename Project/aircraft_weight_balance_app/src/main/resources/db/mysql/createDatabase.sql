@@ -1,114 +1,46 @@
-# For hccis.ca version of the database
-# DROP DATABASE IF EXISTS bjmac_squash_skills_w26;
-# CREATE DATABASE bjmac_squash_skills_w26;
-# use bjmac_squash_skills_w26;
-
 #For localhost
-DROP DATABASE IF EXISTS cis2232_squash_scorer;
-CREATE DATABASE cis2232_squash_scorer;
-use cis2232_squash_scorer;
+DROP DATABASE IF EXISTS cis2232_aircraft_weight_balance;
+CREATE DATABASE cis2232_aircraft_weight_balance;
+use cis2232_aircraft_weight_balance;
 
 -- ------------------------------------------------------------------------------
--- Note the table below to hold data associated with your project.  Expect one
--- table with 7-9 fields.
+-- One row per flight.  totalWeight, centreOfGravity and loadStatus are
+-- calculated by the application when the sheet is saved.
 -- ------------------------------------------------------------------------------
 
-CREATE TABLE squash_match (
-                              id                  INT             NOT NULL AUTO_INCREMENT,
-                              matchDate           VARCHAR(10)    NOT NULL,
-                              createdDateTime     VARCHAR(100)   NOT NULL,
-                              player1Name         VARCHAR(100)    NOT NULL,
-                              player2Name         VARCHAR(100)    NOT NULL,
-                              player1Game1Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player2Game1Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player1Game2Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player2Game2Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player1Game3Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player2Game3Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player1Game4Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player2Game4Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player1Game5Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              player2Game5Score   TINYINT UNSIGNED NOT NULL DEFAULT 0,
-                              winnerName          VARCHAR(100)    NOT NULL,
-                              PRIMARY KEY (id)
+CREATE TABLE load_sheet (
+                            loadSheetId      INT            NOT NULL AUTO_INCREMENT,
+                            flightDate       VARCHAR(10)    NOT NULL COMMENT 'yyyy-MM-dd',
+                            tailNumber       VARCHAR(10)    NOT NULL COMMENT 'Aircraft registration, e.g. CGABC',
+                            pilotName        VARCHAR(100)   NOT NULL,
+                            emptyWeight      DOUBLE         NOT NULL COMMENT 'lb',
+                            emptyArm         DOUBLE         NOT NULL COMMENT 'inches aft of datum',
+                            frontSeatWeight  DOUBLE         NOT NULL DEFAULT 0 COMMENT 'lb',
+                            rearSeatWeight   DOUBLE         NOT NULL DEFAULT 0 COMMENT 'lb',
+                            baggageWeight    DOUBLE         NOT NULL DEFAULT 0 COMMENT 'lb',
+                            fuelLoaded       DOUBLE         NOT NULL DEFAULT 0 COMMENT 'US gallons',
+                            totalWeight      DOUBLE         NOT NULL COMMENT 'lb, calculated',
+                            centreOfGravity  DOUBLE         NOT NULL COMMENT 'inches aft of datum, calculated',
+                            loadStatus       VARCHAR(4)     NOT NULL COMMENT 'PASS or FAIL, calculated',
+                            PRIMARY KEY (loadSheetId)
 );
 
-INSERT INTO squash_match
-(matchDate, createdDateTime, player1Name, player2Name,
- player1Game1Score, player2Game1Score,
- player1Game2Score, player2Game2Score,
- player1Game3Score, player2Game3Score,
- player1Game4Score, player2Game4Score,
- player1Game5Score, player2Game5Score,
- winnerName)
+INSERT INTO load_sheet
+(flightDate, tailNumber, pilotName,
+ emptyWeight, emptyArm,
+ frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded,
+ totalWeight, centreOfGravity, loadStatus)
 VALUES
--- 3-0 win
-('2026-09-01', '2026-09-01 19:45:12', 'Alice',  'Bob',    11, 5,  11, 7,  11, 9,  0, 0,   0, 0,   'Alice'),
--- 3-1 win
-('2026-09-03', '2026-09-03 20:10:05', 'Bob',    'Carlos', 11, 8,  9, 11,  11, 6,  11, 4,  0, 0,   'Bob'),
--- 3-2 win (deciding fifth game)
-('2026-09-05', '2026-09-05 18:30:40', 'Carlos', 'Dana',   11, 9,  8, 11,  11, 7,  6, 11,  11, 8, 'Carlos'),
--- 3-1 win with extended games (win by two)
-('2026-09-08', '2026-09-08 19:02:33', 'Dana',   'Alice',  12, 10, 11, 13, 11, 9,  14, 12, 0, 0,  'Dana'),
--- 3-1 win for player 2
-('2026-09-10', '2026-09-10 21:15:00', 'Alice',  'Carlos', 5, 11,  11, 8,  11, 13, 9, 11,  0, 0,  'Carlos'),
--- 3-0 shutout-style win
-('2026-09-12', '2026-09-12 17:50:21', 'Bob',    'Dana',   11, 3,  11, 6,  11, 8,  0, 0,   0, 0,   'Bob'),
--- 3-2 with extended fifth game
-('2026-09-15', '2026-09-15 20:40:18', 'Carlos', 'Bob',    9, 11,  11, 7,  8, 11,  11, 9,  11, 13, 'Bob'),
--- 3-1 win for player 2
-('2026-09-17', '2026-09-17 19:25:47', 'Alice',  'Dana',   4, 11,  6, 11,  11, 9,  3, 11,  0, 0,  'Dana');
-
-# ALTER TABLE SkillsAssessmentSquashTechnical
-#     ADD PRIMARY KEY (id);
-# ALTER TABLE SkillsAssessmentSquashTechnical
-#     MODIFY id int(4) NOT NULL AUTO_INCREMENT COMMENT 'This is the primary key',
-#     AUTO_INCREMENT = 1;
-
-
-# CREATE TABLE CodeType (codeTypeId int(3) COMMENT 'This is the primary key for code types',
-#                        englishDescription varchar(100) NOT NULL COMMENT 'English description',
-#                        frenchDescription varchar(100) DEFAULT NULL COMMENT 'French description',
-#                        createdDateTime datetime DEFAULT NULL,
-#                        createdUserId varchar(20) DEFAULT NULL,
-#                        updatedDateTime datetime DEFAULT NULL,
-#                        updatedUserId varchar(20) DEFAULT NULL
-# ) COMMENT 'This tables holds the code types that are available for the application';
-#
-# ALTER TABLE CodeType
-#     ADD PRIMARY KEY (CodeTypeId);
-#
-# INSERT INTO CodeType (CodeTypeId, englishDescription, frenchDescription, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (1, 'User Types', 'User Types FR', sysdate(), '', CURRENT_TIMESTAMP, '');
-# INSERT INTO CodeType (CodeTypeId, englishDescription, frenchDescription, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (2, 'Squash Technical Types', 'Squash Technical Types FR', sysdate(), '', CURRENT_TIMESTAMP, '');
-#
-#
-#
-# CREATE TABLE CodeValue (
-#                            codeTypeId int(3) NOT NULL COMMENT 'see code_type table',
-#                            codeValueSequence int(3) NOT NULL,
-#                            englishDescription varchar(100) NOT NULL COMMENT 'English description',
-#                            englishDescriptionShort varchar(20) NOT NULL COMMENT 'English abbreviation for description',
-#                            frenchDescription varchar(100) DEFAULT NULL COMMENT 'French description',
-#                            frenchDescriptionShort varchar(20) DEFAULT NULL COMMENT 'French abbreviation for description',
-#                            sortOrder int(3) DEFAULT NULL COMMENT 'Sort order if applicable',
-#                            createdDateTime datetime DEFAULT NULL,
-#                            createdUserId varchar(20) DEFAULT NULL,
-#                            updatedDateTime datetime DEFAULT NULL,
-#                            updatedUserId varchar(20) DEFAULT NULL
-# ) COMMENT='This will hold code values for the application.';
-#
-# ALTER TABLE CodeValue
-#     ADD PRIMARY KEY (CodeTypeId, codeValueSequence);
-#
-# INSERT INTO CodeValue (codeTypeId, codeValueSequence, englishDescription, englishDescriptionShort, frenchDescription, frenchDescriptionShort, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (1, 1, 'General', 'General', 'GeneralFR', 'GeneralFR', '2015-10-25 18:44:37', 'admin', '2015-10-25 18:44:37', 'admin');
-# INSERT INTO CodeValue (codeTypeId, codeValueSequence, englishDescription, englishDescriptionShort, frenchDescription, frenchDescriptionShort, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (1, 2, 'Admin', 'Admin', 'Admin', 'Admin', '2015-10-25 18:44:37', 'admin', '2015-10-25 18:44:37', 'admin');
-# INSERT INTO CodeValue (codeTypeId, codeValueSequence, englishDescription, englishDescriptionShort, frenchDescription, frenchDescriptionShort, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (2, 1, 'Forehand Drives', 'FH Drives', 'Forehand DrivesFR', 'FH DrivesFR', '2024-09-13 18:44:37', 'admin', '2024-09-13 18:44:37', 'admin');
-# INSERT INTO CodeValue (codeTypeId, codeValueSequence, englishDescription, englishDescriptionShort, frenchDescription, frenchDescriptionShort, createdDateTime, createdUserId, updatedDateTime, updatedUserId) VALUES
-#     (2, 2, 'Backhand Drives', 'BH Drives', 'Backhand DrivesFR', 'BH DrivesFR', '2024-09-13 18:44:37', 'admin', '2024-09-13 18:44:37', 'admin');
-#
-
+-- worked example from the topic document
+('2026-09-01', 'CGKDV', 'Alex Martin',   1680, 39.1, 340, 190, 45,  40, 2495.0, 43.26, 'PASS'),
+-- solo, full fuel
+('2026-09-03', 'CGKDV', 'Priya Shah',    1680, 39.1, 180, 0,   0,   53, 2178.0, 40.23, 'PASS'),
+('2026-09-06', 'CFWBA', 'Sam Arsenault', 1702, 40.2, 360, 0,   30,  45, 2362.0, 41.30, 'PASS'),
+-- over maximum gross weight (2550 lb)
+('2026-09-10', 'CFWBA', 'Jordan Lee',    1702, 40.2, 380, 340, 60,  53, 2800.0, 45.81, 'FAIL'),
+-- baggage over 120 lb
+('2026-09-12', 'CGKDV', 'Alex Martin',   1680, 39.1, 190, 0,   150, 30, 2200.0, 43.46, 'FAIL'),
+-- forward of the CG limit (39.88 in at 2438 lb)
+('2026-09-15', 'CGPEI', 'Priya Shah',    1680, 38.0, 440, 0,   0,   53, 2438.0, 39.12, 'FAIL'),
+-- aft of the CG limit (47.3 in)
+('2026-09-18', 'CGPEI', 'Sam Arsenault', 1680, 39.1, 170, 400, 120, 20, 2490.0, 47.53, 'FAIL');
