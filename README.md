@@ -8,6 +8,7 @@ Lead Developer:  Kody Verhulp
 <br/>
 Quality Control:  Nick
 <br/>
+
 ---
 ## Description ##
 This project will be used to record and check the weight and balance of a small aircraft before each flight.
@@ -49,3 +50,8 @@ Constants: station arms front seats 37.0, rear seats 73.0, baggage 95.0, fuel 48
 totalWeight = emptyWeight + frontSeatWeight + rearSeatWeight + baggageWeight + fuelLoaded * 6.0<br/>
 centreOfGravity = (emptyWeight * emptyArm + frontSeatWeight * 37.0 + rearSeatWeight * 73.0 + baggageWeight * 95.0 + fuelLoaded * 6.0 * 48.0) / totalWeight<br/>
 loadStatus = PASS when totalWeight is 2550 or less, baggageWeight is 120 or less, and centreOfGravity is between the forward limit (35.0 in at or below 1950 lb, sloping to 41.0 in at 2550 lb) and 47.3 in; otherwise FAIL<br/>
+
+---
+## Report Details ##
+
+To be determined in future sprint
