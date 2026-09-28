@@ -27,19 +27,22 @@ Base Color:  #1B3A5C (aviation navy)<br/>
 
 ---
 ## Required Fields ##
--loadSheetId: int //Unique id for the load sheet, not user entered <br/>
--flightDate: String Note: yyyy-MM-dd <br/>
--tailNumber: String //Aircraft registration, e.g. CGABC <br/>
--pilotName: String //Name of the pilot in command <br/>
--emptyWeight: double //Empty weight of the aircraft in lb <br/>
--emptyArm: double //Empty CG arm in inches aft of the datum <br/>
--frontSeatWeight: double //Combined weight of pilot and front passenger in lb <br/>
--rearSeatWeight: double //Combined weight of the rear passengers in lb <br/>
--baggageWeight: double //Weight in the baggage area in lb <br/>
--fuelLoaded: double //Usable fuel at takeoff in US gallons <br/>
--totalWeight: double //Loaded weight of the aircraft in lb, calculated <br/>
--centreOfGravity: double //Loaded CG in inches aft of the datum, calculated <br/>
--loadStatus: String //PASS or FAIL against the aircraft limits, calculated <br/>
+
+| Field | Type | Description |
+|---|---|---|
+| loadSheetId | int | Unique id for the load sheet, not user entered |
+| flightDate | String | Date of the flight (yyyy-MM-dd) |
+| tailNumber | String | Aircraft registration, e.g. CGABC |
+| pilotName | String | Name of the pilot in command |
+| emptyWeight | double | Empty weight of the aircraft in lb |
+| emptyArm | double | Empty CG arm in inches aft of the datum |
+| frontSeatWeight | double | Combined weight of pilot and front passenger in lb |
+| rearSeatWeight | double | Combined weight of the rear passengers in lb |
+| baggageWeight | double | Weight in the baggage area in lb |
+| fuelLoaded | double | Usable fuel at takeoff in US gallons |
+| totalWeight | double | Loaded weight of the aircraft in lb (calculated) |
+| centreOfGravity | double | Loaded CG in inches aft of the datum (calculated) |
+| loadStatus | String | PASS or FAIL against the aircraft limits (calculated) |
 
 ---
 ## Calculation ##
