@@ -24,6 +24,7 @@ Stored sheets give the club a history: which aircraft are habitually loaded near
 ---
 ## Color ##
 Base Color:  #1B3A5C (aviation navy)<br/>
+Secondary Color:  #8FB8DE (light blue)<br/>
 
 ---
 ## Required Fields ##
