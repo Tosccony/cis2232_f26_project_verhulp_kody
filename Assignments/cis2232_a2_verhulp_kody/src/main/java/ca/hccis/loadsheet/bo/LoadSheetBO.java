@@ -50,7 +50,6 @@ public class LoadSheetBO {
         } else {
             loadSheet.setLoadStatus(STATUS_FAIL);
         }
-
         return totalMoment / totalWeight;
     }
 }
