@@ -9,6 +9,9 @@ public class LoadSheetBO {
     public static final double ARM_BAGGAGE = 95.0;
     public static final double ARM_FUEL = 48.0;
     public static final double FUEL_WEIGHT_PER_GALLON = 6.0;
+    public static final double MAX_GROSS_WEIGHT = 2550;
+    public static final String STATUS_PASS = "PASS";
+    public static final String STATUS_FAIL = "FAIL";
 
     /**
      * Calculate the loaded weight and center of gravity of the aircraft
@@ -35,6 +38,12 @@ public class LoadSheetBO {
                 + fuelWeight * ARM_FUEL;
 
         loadSheet.setTotalWeight(totalWeight);
+
+        if (totalWeight <= MAX_GROSS_WEIGHT) {
+            loadSheet.setLoadStatus(STATUS_PASS);
+        } else {
+            loadSheet.setLoadStatus(STATUS_FAIL);
+        }
         return totalMoment / totalWeight;
     }
 }
