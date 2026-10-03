@@ -2,6 +2,12 @@ package ca.hccis.loadsheet.bo;
 
 import ca.hccis.loadsheet.entity.LoadSheet;
 
+/**
+ * Business logic for a weight and balance load sheet.
+ *
+ * @author Kody Verhulp
+ * @since 20261002
+ */
 public class LoadSheetBO {
 
     public static final double ARM_FRONT_SEATS = 37.0;
@@ -14,8 +20,8 @@ public class LoadSheetBO {
     public static final String STATUS_FAIL = "FAIL";
 
     /**
-     * Calculate the loaded weight and center of gravity of the aircraft
-     * The total weight is stored on the load sheet.
+     * Calculate the loaded weight and centre of gravity of the aircraft.
+     * The total weight and load status are stored on the load sheet.
      *
      * @param loadSheet the load sheet with the pilot's entries
      * @return The centre of gravity in inches aft of the datum
@@ -44,6 +50,7 @@ public class LoadSheetBO {
         } else {
             loadSheet.setLoadStatus(STATUS_FAIL);
         }
+
         return totalMoment / totalWeight;
     }
 }
