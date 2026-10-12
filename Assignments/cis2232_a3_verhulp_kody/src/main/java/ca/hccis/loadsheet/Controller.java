@@ -47,23 +47,7 @@ public class Controller {
             return;
         }
 
-        String option;
-        do {
-            option = CisUtility.getInputString(MENU).toUpperCase();
-            switch (option) {
-                case "A":
-                    processAdd();
-                    break;
-                case "V":
-                    processShow();
-                    break;
-                case "X":
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid option");
-            }
-        } while (!option.equals("X"));
+        runMenu(true);
 
         try {
             fileWriter.close();
@@ -73,46 +57,77 @@ public class Controller {
     }
 
     /**
+     * Show the menu until the user picks X.
+     *
+     * @param gui True to use a dialog, false to use the console
+     * @since 20261012
+     * @author Kody Verhulp
+     */
+    public static void runMenu(boolean gui) {
+        String option;
+        do {
+            option = CisUtility.getInputString(MENU, gui).toUpperCase();
+            switch (option) {
+                case "A":
+                    processAdd(gui);
+                    break;
+                case "V":
+                    processShow(gui);
+                    break;
+                case "X":
+                    CisUtility.display("Exiting...", gui);
+                    break;
+                default:
+                    CisUtility.display("Invalid option", gui);
+            }
+        } while (!option.equals("X"));
+    }
+
+    /**
      * Create a new load sheet with the next id, get its details from the
      * user and save it to the file right away.
      *
+     * @param gui True to use a dialog, false to use console
      * @since 20260925
      * @author Kody Verhulp
      */
-    public static void processAdd() {
+    public static void processAdd(boolean gui) {
         LoadSheet loadSheet = new LoadSheet();
         loadSheet.setLoadSheetId(readSavedLines().size() + 1);
-        loadSheet.getInformation();
+        loadSheet.getInformation(gui);
         LoadSheetBO.calculate(loadSheet);
 
         try {
             fileWriter.write(loadSheet.toJson() + System.lineSeparator());
             fileWriter.flush();
-            System.out.println("Load sheet " + loadSheet.getLoadSheetId() + " has been saved.");
-            System.out.println("Total weight: " + loadSheet.getTotalWeight() + " lb, CG: " + String.format("%.2f", loadSheet.getCentreOfGravity()) + "in, Status: " + loadSheet.getLoadStatus());
+            CisUtility.display("Load sheet " + loadSheet.getLoadSheetId() + " has been saved.", gui);
+            CisUtility.display("Total weight: " + loadSheet.getTotalWeight() + " lb, CG: " + String.format("%.2f", loadSheet.getCentreOfGravity()) + "in, Status: " + loadSheet.getLoadStatus(), gui);
         } catch (IOException e) {
-            System.out.println("Could not save the load sheet: " + e.getMessage());
+            CisUtility.display("Could not save the load sheet: " + e.getMessage(), gui);
         }
     }
 
     /**
      * Show every load sheet saved in the file, or a message if there are none.
      *
+     * @param gui True to use a dialog, false to use console
      * @since 20260925
      * @author Kody Verhulp
      */
-    public static void processShow() {
+    public static void processShow(boolean gui) {
         List<String> lines = readSavedLines();
         if (lines.isEmpty()) {
-            System.out.println("No load sheets exist.");
+            CisUtility.display("No load sheets exist.", gui);
             return;
         }
 
         Gson gson = new Gson();
+        StringBuilder output = new StringBuilder();
         for (String line : lines) {
             LoadSheet loadSheet = gson.fromJson(line, LoadSheet.class);
-            System.out.println(loadSheet);
+            output.append(loadSheet).append(System.lineSeparator());
         }
+        CisUtility.display(output.toString(), gui);
     }
 
     /**

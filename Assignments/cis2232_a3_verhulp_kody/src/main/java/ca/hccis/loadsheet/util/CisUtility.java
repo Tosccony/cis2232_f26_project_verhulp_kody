@@ -1,5 +1,6 @@
 package ca.hccis.loadsheet.util;
 
+import javax.swing.*;
 import java.text.NumberFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -50,21 +51,57 @@ public class CisUtility {
     }
 
     /**
+     * Get input from the user using the console or a JOptionPane dialog
+     *
+     * @param prompt Prompt for the user
+     * @param gui True to use dialog, false to use the console
+     * @return String entered by the user, or an empty String if the dialog was cancelled
+     * @since 20261012
+     * @author Kody Verhulp
+     */
+    public static String getInputString(String prompt, boolean gui) {
+        if (gui) {
+            String output = JOptionPane.showInputDialog(prompt);
+            if (output == null) {
+                return "";
+            }
+            return output;
+        }
+        return getInputString(prompt);
+    }
+
+    /**
+     * Show a message to the user using the console or a JOptionPane dialog
+     *
+     * @param gui True to use a dialog and false to use the console
+     * @since 20261012
+     * @author Kody Verhulp
+     */
+    public static void display(String message, boolean gui) {
+        if (gui) {
+            JOptionPane.showMessageDialog(null, message);
+        } else {
+            System.out.println(message);
+        }
+    }
+
+
+    /**
      * Get input from the user using the console
      *
      * @param prompt Prompt for the user
+     * @param gui True to use dialog, false to use console
      * @return String entered by the user
      * @since 20211020
      * @author BJM
      */
-    public static String getInputString(String prompt, int minLength, int maxLength) {
+    public static String getInputString(String prompt, int minLength, int maxLength, boolean gui) {
 
-        System.out.println(prompt+ " ("+minLength+" to "+ maxLength+" characters" + " -->");
-        String output = input.nextLine();
+        prompt = prompt + " ("+minLength+" to "+ maxLength+" characters)";
+        String output = getInputString(prompt, gui);
 
         while(output.length() < minLength || output.length() > maxLength) {
-            System.out.println(prompt + " -->");
-            output = input.nextLine();
+            output = getInputString(prompt, gui);
         }
 
         return output;
@@ -95,24 +132,25 @@ public class CisUtility {
      * @param prompt Prompt for the user
      * @param min Lowest value allowed by the system
      * @param max Highest value allowed by the system (Double.MAX_VALUE for no limit)
+     * @param gui True to use dialog, false to use the console
      * @since 20260925
      * @author Kody Verhulp
      */
-    public static double getInputDouble(String prompt, double min, double max) {
+    public static double getInputDouble(String prompt, double min, double max, boolean gui) {
         while (true) {
-            String inputString = getInputString(prompt);
+            String inputString = getInputString(prompt, gui);
             try {
                 double value = Double.parseDouble(inputString);
                 if (value >= min && value <= max) {
                     return value;
                 }
                 if (max == Double.MAX_VALUE) {
-                    System.out.println("Must be at least " + min + ".");
+                    display("Must be at least " + min + ".", gui);
                 } else {
-                    System.out.println("Must be between " + min + " and " + max);
+                    display("Must be between " + min + " and " + max, gui);
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
+                display("Please enter a valid number.", gui);
             }
         }
     }
@@ -195,13 +233,14 @@ public class CisUtility {
      * it will default to today's date.
      *
      * @param prompt Prompt for the user
+     * @param gui True to use dialog, false to use the console
      * @return The date entered by the user (yyyy-MM-dd)
      * @since 20260925
      * @author Kody Verhulp
      */
-    public static String getInputDate(String prompt) {
+    public static String getInputDate(String prompt, boolean gui) {
         while (true) {
-            String inputString = getInputString(prompt).trim();
+            String inputString = getInputString(prompt, gui).trim();
             if (inputString.isEmpty()) {
                 return getTodayString("yyyy-MM-dd");
             }
@@ -209,7 +248,7 @@ public class CisUtility {
                 LocalDate.parse(inputString);
                 return inputString;
             } catch (DateTimeException e) {
-                System.out.println("Please use yyyy-MM-dd");
+                display("Please use yyyy-MM-dd", gui);
             }
         }
     }

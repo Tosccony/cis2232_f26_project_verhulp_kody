@@ -44,14 +44,14 @@ public class LoadSheet {
      * Ask the user for the load sheet details. Bad input is asked again.
      * The id is set by the Controller and the calculated fields are left
      * for the calculation assignment.
-     *
+     * @param gui allows the user to use True for a dialog or false for console
      * @since 20260925
      * @author Kody Verhulp
      */
-    public void getInformation() {
-        flightDate = CisUtility.getInputDate("Flight date (yyyy-MM-dd, blank = today's date)");
-        tailNumber = CisUtility.getInputString("Tail number (ex: C-GABC)", 1, 10).toUpperCase().replace("-", "");
-        pilotName = CisUtility.getInputString("Pilot Name", 1, 50);
+    public void getInformation(boolean gui) {
+        flightDate = CisUtility.getInputDate("Flight date (yyyy-MM-dd, blank = today's date)", gui);
+        tailNumber = CisUtility.getInputString("Tail number (ex: C-GABC)", 1, 10, gui).toUpperCase().replace("-", "");
+        pilotName = CisUtility.getInputString("Pilot Name", 1, 50, gui);
 
         // Each prompt carries the setter for its field, so one loop can ask all of them
         NumberPrompt[] numberPrompts = {
@@ -64,7 +64,7 @@ public class LoadSheet {
         };
 
         for (NumberPrompt prompt : numberPrompts) {
-            double value = CisUtility.getInputDouble(prompt.label(), prompt.min(), prompt.max());
+            double value = CisUtility.getInputDouble(prompt.label(), prompt.min(), prompt.max(), gui);
             prompt.setter().accept(value);
         }
     }
