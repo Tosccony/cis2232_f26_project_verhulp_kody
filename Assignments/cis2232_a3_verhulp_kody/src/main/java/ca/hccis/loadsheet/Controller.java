@@ -29,6 +29,8 @@ public class Controller {
     public static final String FILE_NAME = "data_verhulp_kody.json";
     private static final Path FILE_PATH =Paths.get(PATH + FILE_NAME);
     private static FileWriter fileWriter;
+    //Accumulator: load sheets added by both threads (loadSheetsAdded)
+    private static int loadSheetsAdded = 0;
 
     /**
      * Create the data folder and file if needed, show the menu until the
@@ -104,18 +106,36 @@ public class Controller {
      */
     public static void processAdd(boolean gui) {
         LoadSheet loadSheet = new LoadSheet();
-        loadSheet.setLoadSheetId(readSavedLines().size() + 1);
         loadSheet.getInformation(gui);
         LoadSheetBO.calculate(loadSheet);
 
         try {
-            fileWriter.write(loadSheet.toJson() + System.lineSeparator());
-            fileWriter.flush();
+            int added = save(loadSheet);
             CisUtility.display("Load sheet " + loadSheet.getLoadSheetId() + " has been saved.", gui);
+            CisUtility.display("Load sheets added by both threads: " + added, gui);
             CisUtility.display("Total weight: " + loadSheet.getTotalWeight() + " lb, CG: " + String.format("%.2f", loadSheet.getCentreOfGravity()) + "in, Status: " + loadSheet.getLoadStatus(), gui);
         } catch (IOException e) {
             CisUtility.display("Could not save the load sheet: " + e.getMessage(), gui);
         }
+    }
+
+    /**
+     * Give the load sheet the next id, write it to the file and add it to the
+     * accumulator. Synchronized so only one thread saves at a time, this allows
+     * the two threads to not pick the same id and overwrite each other.
+     *
+     * @param loadSheet Load sheet to save
+     * @return Load sheet added by both threads so far
+     * @throws IOException if the file can't be written
+     * @since 20261012
+     * @author Kody Verhulp
+     */
+    private static synchronized int save(LoadSheet loadSheet) throws IOException {
+        loadSheet.setLoadSheetId(readSavedLines().size() + 1);
+        fileWriter.write(loadSheet.toJson() + System.lineSeparator());
+        fileWriter.flush();
+        loadSheetsAdded++;
+        return loadSheetsAdded;
     }
 
     /**
