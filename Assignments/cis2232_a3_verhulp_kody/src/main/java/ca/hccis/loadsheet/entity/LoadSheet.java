@@ -42,8 +42,9 @@ public class LoadSheet {
 
     /**
      * Ask the user for the load sheet details. Bad input is asked again.
-     * The id is set by the Controller and the calculated fields are left
-     * for the calculation assignment.
+     * The id is set by the Controller when saving, and the calculated fields
+     * are filled in by LoadSheetBO.calculate
+     *
      * @param gui allows the user to use True for a dialog or false for console
      * @since 20260925
      * @author Kody Verhulp

@@ -33,8 +33,8 @@ public class Controller {
     private static int loadSheetsAdded = 0;
 
     /**
-     * Create the data folder and file if needed, show the menu until the
-     * user picks X, then close the file.
+     * Create the data folder and file if needed, start the console and GUI
+     * threads, wait for both to finish, then close the file.
      *
      * @param args Not used
      * @since 20260925
@@ -97,8 +97,8 @@ public class Controller {
     }
 
     /**
-     * Create a new load sheet with the next id, get its details from the
-     * user and save it to the file right away.
+     * Create a new load sheet and gets the details, calculates it, saves it,
+     * and shows the result and the running total
      *
      * @param gui True to use a dialog, false to use console
      * @since 20260925
