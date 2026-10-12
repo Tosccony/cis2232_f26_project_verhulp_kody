@@ -47,7 +47,18 @@ public class Controller {
             return;
         }
 
-        runMenu(true);
+        Thread consoleThread = new Thread(() -> runMenu(false));
+        Thread guiThread = new Thread(() -> runMenu(true));
+
+        consoleThread.start();
+        guiThread.start();
+
+        try {
+            consoleThread.join();
+            guiThread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             fileWriter.close();
