@@ -1,5 +1,6 @@
 package ca.hccis.loadsheet;
 
+import ca.hccis.loadsheet.bo.LoadSheetBO;
 import ca.hccis.loadsheet.entity.LoadSheet;
 import ca.hccis.loadsheet.util.CisUtility;
 import com.google.gson.Gson;
@@ -82,11 +83,13 @@ public class Controller {
         LoadSheet loadSheet = new LoadSheet();
         loadSheet.setLoadSheetId(readSavedLines().size() + 1);
         loadSheet.getInformation();
+        LoadSheetBO.calculate(loadSheet);
 
         try {
             fileWriter.write(loadSheet.toJson() + System.lineSeparator());
             fileWriter.flush();
             System.out.println("Load sheet " + loadSheet.getLoadSheetId() + " has been saved.");
+            System.out.println("Total weight: " + loadSheet.getTotalWeight() + " lb, CG: " + String.format("%.2f", loadSheet.getCentreOfGravity()) + "in, Status: " + loadSheet.getLoadStatus());
         } catch (IOException e) {
             System.out.println("Could not save the load sheet: " + e.getMessage());
         }
