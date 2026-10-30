@@ -1,4 +1,4 @@
-package ca.hccis.squash.entity;
+package ca.hccis.loadsheet.entity;
 
 /**
  * One weight and balance load sheet for a single flight (a row of the load_sheet table).

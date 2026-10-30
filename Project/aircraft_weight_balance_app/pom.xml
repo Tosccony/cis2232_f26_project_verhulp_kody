@@ -16,11 +16,11 @@
     <!-- =================================================================== -->
     <!-- Project Metadata                                                    -->
     <!-- =================================================================== -->
-    <groupId>ca.hccis.squash</groupId>
-    <artifactId>squash_skills</artifactId>
+    <groupId>ca.hccis</groupId>
+    <artifactId>aircraft_weight_balance</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>squash_skills_w26</name>
-    <description>Squash Skills Application</description>
+    <name>aircraft_weight_balance</name>
+    <description>Aircraft Weight and Balance Sheet</description>
     <packaging>jar</packaging>
 
     <!-- =================================================================== -->

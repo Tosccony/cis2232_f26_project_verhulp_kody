@@ -1,4 +1,4 @@
-package ca.hccis.squash.util;
+package ca.hccis.loadsheet.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

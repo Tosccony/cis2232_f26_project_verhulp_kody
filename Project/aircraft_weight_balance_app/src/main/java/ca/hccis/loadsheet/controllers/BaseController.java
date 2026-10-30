@@ -1,6 +1,6 @@
-package ca.hccis.squash.controllers;
+package ca.hccis.loadsheet.controllers;
 
-import ca.hccis.squash.util.CisUtility;
+import ca.hccis.loadsheet.util.CisUtility;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

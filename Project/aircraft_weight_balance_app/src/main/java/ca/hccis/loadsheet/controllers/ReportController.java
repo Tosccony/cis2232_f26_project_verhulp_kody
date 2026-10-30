@@ -1,9 +1,9 @@
-package ca.hccis.squash.controllers;
+package ca.hccis.loadsheet.controllers;
 
-import ca.hccis.squash.dao.LoadSheetDAO;
-import ca.hccis.squash.entity.LoadSheet;
-import ca.hccis.squash.entity.ReportLoadSheet;
-import ca.hccis.squash.util.CisUtilityFile;
+import ca.hccis.loadsheet.dao.LoadSheetDAO;
+import ca.hccis.loadsheet.entity.LoadSheet;
+import ca.hccis.loadsheet.entity.ReportLoadSheet;
+import ca.hccis.loadsheet.util.CisUtilityFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -49,42 +49,45 @@ public class ReportController {
      *
      * @param model
      * @return view for the report
+     * @throws SQLException if the aircraft list can't be read (shown on the error page)
      * @author Kody Verhulp
      * @since 20261030
      */
     @RequestMapping("/loadsheet/history")
-    public String reportLoadingHistory(Model model) {
+    public String reportLoadingHistory(Model model) throws SQLException {
         logger.info("Running the reports controller loading history method");
         model.addAttribute("reportInput", new ReportLoadSheet());
+        model.addAttribute("tailNumbers", new LoadSheetDAO().selectTailNumbers());
         return "report/reportLoadingHistory";
     }
 
     /**
-     * Process the aircraft loading history report. The load sheets are selected using jdbc,
-     * written to a file, and shown on the same view as the input form.
+     * Process the aircraft loading history report. The load sheets matching the criteria are
+     * selected using jdbc, written to a file, and shown on the same view as the input form.
      *
-     * @param reportInput Object containing the inputs for the report
+     * @param model
+     * @param reportInput Object containing the criteria for the report
      * @return view to show the report
      * @throws SQLException if the database can't be read (shown on the error page)
      * @author Kody Verhulp
      * @since 20261030
      */
     @RequestMapping("/loadsheet/history/submit")
-    public String reportLoadingHistorySubmit(@ModelAttribute("reportInput") ReportLoadSheet reportInput)
+    public String reportLoadingHistorySubmit(Model model, @ModelAttribute("reportInput") ReportLoadSheet reportInput)
             throws SQLException {
-
-        //Tail numbers are stored in upper case without the dash (C-GKDV is saved as CGKDV)
-        reportInput.setTailNumber(reportInput.getTailNumber().replace("-", "").strip().toUpperCase());
-        logger.info("Loading history report for " + reportInput.getTailNumber());
+        logger.info(reportInput.getCriteriaSummary());
 
         LoadSheetDAO loadSheetDAO = new LoadSheetDAO();
-        ArrayList<LoadSheet> loadSheets = loadSheetDAO.selectAllByTailNumberAndDates(
-                reportInput.getTailNumber(), reportInput.getStartDate(), reportInput.getEndDate());
+        ArrayList<LoadSheet> loadSheets = loadSheetDAO.selectAllByCriteria(reportInput);
         reportInput.setLoadSheets(loadSheets);
+        model.addAttribute("tailNumbers", loadSheetDAO.selectTailNumbers());
 
-        //Also write the report to a file
+        //Also write the report to a file: the criteria on the first line, then one line per load sheet
         if (!loadSheets.isEmpty()) {
-            CisUtilityFile.writeReportToFile("AircraftLoadingHistory", loadSheets);
+            ArrayList<Object> reportLines = new ArrayList<>();
+            reportLines.add(reportInput.getCriteriaSummary());
+            reportLines.addAll(loadSheets);
+            CisUtilityFile.writeReportToFile("AircraftLoadingHistory", reportLines);
         }
 
         //@ModelAttribute has already put reportInput in the model for the view

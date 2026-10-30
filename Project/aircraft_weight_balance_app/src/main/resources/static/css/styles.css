@@ -403,7 +403,7 @@ Arrange invoice list tittle and add button
 
 .rpt-field {
     display: flex;
-    flex: 1 1 180px;
+    flex: 1 1 150px;
     flex-direction: column;
 }
 
@@ -414,7 +414,8 @@ Arrange invoice list tittle and add button
     color: var(--rpt-ink);
 }
 
-.rpt-field input {
+.rpt-field input,
+.rpt-field select {
     box-sizing: border-box;
     width: 100%;
     height: 42px;
@@ -429,18 +430,26 @@ Arrange invoice list tittle and add button
     box-shadow: none;
 }
 
-.rpt-field input:focus {
+.rpt-field input:focus,
+.rpt-field select:focus {
     outline: none;
     border-color: var(--main-color-primary);
     box-shadow: 0 0 0 3px var(--main-color-bright);
 }
 
-.rpt-tail input {
-    text-transform: uppercase;
+.rpt-field select {
+    cursor: pointer;
 }
 
-.rpt-tail input::placeholder {
-    text-transform: none;
+.rpt-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rpt-clear {
+    font-weight: 600;
+    color: var(--main-color-primary);
 }
 
 .rpt-filters .rpt-button {

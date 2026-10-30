@@ -1,4 +1,4 @@
-package ca.hccis.squash.security;
+package ca.hccis.loadsheet.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

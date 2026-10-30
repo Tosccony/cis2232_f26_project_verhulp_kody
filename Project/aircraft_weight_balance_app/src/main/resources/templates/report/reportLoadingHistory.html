@@ -13,20 +13,39 @@
         <div class="rpt-lede" th:text="#{label.report.loading.history.description}">description</div>
     </div>
 
+    <!--Every criterion is optional: leave them all blank to list every load sheet-->
     <form class="rpt-card rpt-filters" th:action="@{/report/loadsheet/history/submit}" method="post">
-        <div class="rpt-field rpt-tail">
-            <label for="tailNumber">Tail number</label>
-            <input type="text" maxlength="10" placeholder="e.g. CGKDV" required th:field="${reportInput.tailNumber}">
+        <div class="rpt-field">
+            <label for="tailNumber">Aircraft</label>
+            <select th:field="${reportInput.tailNumber}">
+                <option value="">All aircraft</option>
+                <option th:each="tail : ${tailNumbers}" th:value="${tail}" th:text="${tail}">CGKDV</option>
+            </select>
+        </div>
+        <div class="rpt-field">
+            <label for="pilotName">Pilot</label>
+            <input type="text" maxlength="100" placeholder="Any pilot" th:field="${reportInput.pilotName}">
+        </div>
+        <div class="rpt-field">
+            <label for="loadStatus">Status</label>
+            <select th:field="${reportInput.loadStatus}">
+                <option value="">Any</option>
+                <option value="PASS">PASS</option>
+                <option value="FAIL">FAIL</option>
+            </select>
         </div>
         <div class="rpt-field">
             <label for="startDate">From</label>
-            <input type="date" required th:field="${reportInput.startDate}">
+            <input type="date" th:field="${reportInput.startDate}">
         </div>
         <div class="rpt-field">
             <label for="endDate">To</label>
-            <input type="date" required th:field="${reportInput.endDate}">
+            <input type="date" th:field="${reportInput.endDate}">
         </div>
-        <button type="submit" class="rpt-button">Run report</button>
+        <div class="rpt-actions">
+            <button type="submit" class="rpt-button">Run report</button>
+            <a class="rpt-clear" th:href="@{/report/loadsheet/history}">Clear</a>
+        </div>
     </form>
 
     <!--loadSheets is null before the first submit, and empty when nothing matched-->
@@ -42,8 +61,8 @@
                   passed=${reportInput.loadSheets.?[loadStatus == 'PASS'].size()}">
 
         <div class="rpt-results-heading">
-            <h3 th:text="${reportInput.tailNumber}">CGKDV</h3>
-            <span th:text="|${reportInput.startDate} to ${reportInput.endDate}|">dates</span>
+            <h3 th:text="${reportInput.aircraftLabel}">CGKDV</h3>
+            <span th:text="${reportInput.filterSummary}">criteria</span>
         </div>
 
         <div class="rpt-tiles">
@@ -82,6 +101,7 @@
                     <thead>
                     <tr>
                         <th>Flight date</th>
+                        <th>Aircraft</th>
                         <th>Pilot</th>
                         <th class="rpt-num">Front seats <span class="rpt-unit">lb</span></th>
                         <th class="rpt-num">Rear seats <span class="rpt-unit">lb</span></th>
@@ -95,6 +115,7 @@
                     <tbody>
                     <tr th:each="item : ${reportInput.loadSheets}">
                         <td th:text="${item.flightDate}"></td>
+                        <td th:text="${item.tailNumber}"></td>
                         <td th:text="${item.pilotName}"></td>
                         <td class="rpt-num" th:text="${#numbers.formatDecimal(item.frontSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
                         <td class="rpt-num" th:text="${#numbers.formatDecimal(item.rearSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
@@ -116,6 +137,7 @@
 
         <script th:inline="javascript">
             const flightDates = [[${reportInput.loadSheets.![flightDate]}]];
+            const flightTails = [[${reportInput.loadSheets.![tailNumber]}]];
             const pilotNames = [[${reportInput.loadSheets.![pilotName]}]];
             const totalWeights = [[${reportInput.loadSheets.![totalWeight]}]];
             const loadStatuses = [[${reportInput.loadSheets.![loadStatus]}]];
@@ -153,7 +175,8 @@
             new Chart(document.getElementById('weightChart'), {
                 type: 'bar',
                 data: {
-                    labels: flightDates,
+                    //Two-line labels: the date, then the aircraft
+                    labels: flightDates.map((date, i) => [date, flightTails[i]]),
                     datasets: [
                         {label: 'Passed', data: weightsFor('PASS'), backgroundColor: '#1B3A5C'},
                         {label: 'Failed', data: weightsFor('FAIL'), backgroundColor: '#d03b3b'}
@@ -178,7 +201,7 @@
                         legend: {display: false},
                         tooltip: {
                             callbacks: {
-                                title: items => flightDates[items[0].dataIndex] + ' · ' + pilotNames[items[0].dataIndex],
+                                title: items => [flightDates, flightTails, pilotNames].map(list => list[items[0].dataIndex]).join(' · '),
                                 label: item => item.dataset.label + ': ' + item.parsed.y.toLocaleString() + ' lb'
                             }
                         }

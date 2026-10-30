@@ -59,18 +59,27 @@ loadStatus = PASS when totalWeight is 2550 or less, baggageWeight is 120 or less
 ## Report Details ##
 
 **Aircraft Loading History**<br/>
-Shows every load sheet for one aircraft between two dates, so the club can see which aircraft are loaded near their limits and which flights were refused.
+Searches the load sheets so the club can see which aircraft are loaded near their limits and which flights were refused. Every input is optional: leave them all blank to list every load sheet.
 
 | Input | Format | Example |
 |---|---|---|
-| tailNumber | Aircraft registration (dashes and lower case are accepted) | CGKDV or C-GKDV |
-| startDate | yyyy-MM-dd | 2026-09-01 |
-| endDate | yyyy-MM-dd (flights on this date are included) | 2026-09-30 |
+| tailNumber | Chosen from the aircraft that have load sheets, or All aircraft | CGKDV |
+| pilotName | Any part of the pilot's name (not case sensitive) | alex |
+| loadStatus | Any, PASS or FAIL | FAIL |
+| startDate | yyyy-MM-dd; flights on or after this date | 2026-09-01 |
+| endDate | yyyy-MM-dd; flights on or before this date | 2026-09-30 |
 
-Displayed for each matching load sheet, oldest flight first (the tail number and dates are shown once, above the results): flightDate, pilotName, frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded, totalWeight, centreOfGravity, loadStatus<br/>
-Summary: number of flights, and how many PASS and FAIL<br/>
+Displayed for each matching load sheet, oldest flight first: flightDate, tailNumber, pilotName, frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded, totalWeight, centreOfGravity, loadStatus<br/>
+Summary: the criteria used, the number of flights, and how many PASS and FAIL<br/>
 Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a dashed line at the 2550 lb maximum gross weight<br/>
-No data: "No load sheets found for that aircraft and date range"<br/>
-File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`, one load sheet per line<br/>
+No data: "No load sheets match those criteria"<br/>
+File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`: the criteria on the first line, then one load sheet per line<br/>
 <br/>
-Example with the sample data: CGKDV from 2026-09-01 to 2026-09-30 shows 3 flights (2 PASS, 1 FAIL).
+Examples with the sample data:
+
+| Criteria | Result |
+|---|---|
+| CGKDV, 2026-09-01 to 2026-09-30 | 3 flights (2 PASS, 1 FAIL) |
+| All aircraft, FAIL | 4 flights (0 PASS, 4 FAIL) |
+| All aircraft, pilot "alex" | 2 flights (1 PASS, 1 FAIL) |
+| Everything blank | all 7 load sheets |
