@@ -334,3 +334,348 @@ Arrange invoice list tittle and add button
 .tableStyles td:last-child {
     padding-right: 10px;
 }
+
+/*-----------------------------------------------------------------------------
+ Report pages (Sprint 2). Every class starts with rpt- so no other page changes.
+ Text inside the cards uses div/span, not p/strong, because of the global
+ "body,p,strong,th { color:#000 !important }" rule above. The few !important
+ rules below beat the global table/td/th rules.
+-----------------------------------------------------------------------------*/
+.rpt-page {
+    --rpt-surface: #ffffff;
+    --rpt-ink: #0b0b0b;
+    --rpt-ink-secondary: #52514e;
+    --rpt-ink-muted: #898781;
+    --rpt-hairline: #e1e0d9;
+    --rpt-border: #c3c2b7;
+    --rpt-good: #0ca30c;
+    --rpt-good-text: #006300;
+    --rpt-critical: #d03b3b;
+    --rpt-critical-text: #a82525;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 16px 56px;
+}
+
+.rpt-header {
+    margin-bottom: 24px;
+}
+
+.rpt-header .title {
+    margin-bottom: 8px !important;
+}
+
+.rpt-lede {
+    max-width: 640px;
+    font-size: 17px;
+    color: #d6e2ef;
+}
+
+.rpt-card {
+    margin-bottom: 24px;
+    padding: 24px;
+    color: var(--rpt-ink);
+    background: var(--rpt-surface);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.rpt-card-title {
+    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--rpt-ink);
+}
+
+.rpt-card-caption {
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--rpt-ink-secondary);
+}
+
+/* Report criteria: one row of fields that wraps on narrow screens */
+.rpt-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.rpt-field {
+    display: flex;
+    flex: 1 1 180px;
+    flex-direction: column;
+}
+
+.rpt-field label {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rpt-ink);
+}
+
+.rpt-field input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 42px;
+    margin: 0;
+    padding: 0 12px;
+    font-size: 16px;
+    line-height: normal;
+    color: var(--rpt-ink);
+    background: #fff;
+    border: 1px solid var(--rpt-border);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.rpt-field input:focus {
+    outline: none;
+    border-color: var(--main-color-primary);
+    box-shadow: 0 0 0 3px var(--main-color-bright);
+}
+
+.rpt-tail input {
+    text-transform: uppercase;
+}
+
+.rpt-tail input::placeholder {
+    text-transform: none;
+}
+
+.rpt-filters .rpt-button {
+    height: 42px;
+    margin: 0;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--main-color-primary);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.rpt-filters .rpt-button:hover {
+    background: #12283f;
+}
+
+.rpt-filters .rpt-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--main-color-bright);
+}
+
+/* Results */
+.rpt-results-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    margin: 8px 0 16px;
+    color: #d6e2ef;
+}
+
+.rpt-results-heading h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+}
+
+.rpt-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.rpt-tiles .rpt-card {
+    margin-bottom: 0;
+    padding: 20px 24px;
+}
+
+.rpt-tile-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--rpt-ink-secondary);
+}
+
+.rpt-tile-value {
+    margin-top: 4px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--rpt-ink);
+}
+
+.rpt-icon-good {
+    color: var(--rpt-good);
+}
+
+.rpt-icon-critical {
+    color: var(--rpt-critical);
+}
+
+.rpt-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--rpt-ink-secondary);
+}
+
+.rpt-legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rpt-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+/* Same colours as the bars in the chart script */
+.rpt-swatch-pass {
+    background: var(--main-color-primary);
+}
+
+.rpt-swatch-fail {
+    background: var(--rpt-critical);
+}
+
+/* Fixed height includes the x-axis labels, so the card never scrolls */
+.rpt-chart {
+    position: relative;
+    height: 320px;
+}
+
+.rpt-table-wrap {
+    overflow-x: auto;
+}
+
+.rpt-page table.rpt-table {
+    display: table !important;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.rpt-page .rpt-table th {
+    padding: 0 12px 10px !important;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+    vertical-align: bottom;
+    white-space: nowrap;
+    color: var(--rpt-ink-secondary) !important;
+    border-bottom: 1px solid var(--rpt-border);
+}
+
+.rpt-page .rpt-table td {
+    padding: 12px !important;
+    white-space: nowrap;
+    color: var(--rpt-ink);
+    border-bottom: 1px solid var(--rpt-hairline);
+}
+
+.rpt-page .rpt-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.rpt-page .rpt-table tbody tr:hover {
+    background: #f4f6f9;
+}
+
+.rpt-page .rpt-table .rpt-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.rpt-unit {
+    font-weight: 400;
+    color: var(--rpt-ink-muted);
+}
+
+/* PASS/FAIL never relies on colour alone: icon + text in every badge */
+.rpt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 20px;
+    border-radius: 999px;
+}
+
+.rpt-badge-pass {
+    color: var(--rpt-good-text);
+    background: #e6f4e6;
+}
+
+.rpt-badge-fail {
+    color: var(--rpt-critical-text);
+    background: #fbe9e9;
+}
+
+.rpt-empty {
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.rpt-empty-icon {
+    margin-bottom: 12px;
+    font-size: 28px;
+    color: var(--rpt-ink-muted);
+}
+
+.rpt-empty-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.rpt-empty-hint {
+    margin-top: 4px;
+    color: var(--rpt-ink-secondary);
+}
+
+/* Reports list */
+.rpt-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+a.rpt-link-card {
+    display: block;
+    margin-bottom: 0;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+
+a.rpt-link-card:hover,
+a.rpt-link-card:focus-visible {
+    outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px var(--main-color-bright), 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.rpt-link-card .rpt-card-caption {
+    margin-bottom: 0;
+}
+
+.rpt-link-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-weight: 600;
+    color: var(--main-color-primary);
+}

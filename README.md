@@ -67,9 +67,9 @@ Shows every load sheet for one aircraft between two dates, so the club can see w
 | startDate | yyyy-MM-dd | 2026-09-01 |
 | endDate | yyyy-MM-dd (flights on this date are included) | 2026-09-30 |
 
-Displayed for each matching load sheet, oldest flight first: flightDate, tailNumber, pilotName, frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded, totalWeight, centreOfGravity, loadStatus<br/>
+Displayed for each matching load sheet, oldest flight first (the tail number and dates are shown once, above the results): flightDate, pilotName, frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded, totalWeight, centreOfGravity, loadStatus<br/>
 Summary: number of flights, and how many PASS and FAIL<br/>
-Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a line at the 2550 lb maximum gross weight<br/>
+Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a dashed line at the 2550 lb maximum gross weight<br/>
 No data: "No load sheets found for that aircraft and date range"<br/>
 File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`, one load sheet per line<br/>
 <br/>

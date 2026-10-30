@@ -4,119 +4,191 @@
     <title id="pageTitle">Report</title>
 </head>
 <body>
-<style scoped="scoped">input:not(.hidden) {
-    display: inline-block;
-    float: right
-}
-
-label {
-    margin-right: 8px
-}
-
-th, td {
-    padding: 4px 8px !important
-}
-
-.fail {
-    color: #C0392B !important;
-    font-weight: bold
-}</style>
 <nav th:replace="fragments/navHeader :: navbar"></nav>
 
+<!--Styles are the rpt- classes at the end of styles.css-->
+<div class="rpt-page">
+    <div class="rpt-header">
+        <h2 class="title is-2" th:text="#{label.report.loading.history}">Aircraft Loading History</h2>
+        <div class="rpt-lede" th:text="#{label.report.loading.history.description}">description</div>
+    </div>
 
-<div class="container has-text-centered">
-    <h2 class="title is-2" th:text="#{label.report.loading.history}">_</h2>
-
-    <form th:action="@{/report/loadsheet/history/submit}" method="post" class="wbb"
-          style="display:inline-block;text-align:left!important">
-        <label for="tailNumber">Tail Number: </label><br/>
-        <input type="text" maxlength="10" placeholder="CGKDV" required th:field="${reportInput.tailNumber}"><br/>
-
-        <label for="startDate">Start Date: </label><br/>
-        <input type="date" required th:field="${reportInput.startDate}"><br/>
-
-        <label for="endDate">End Date: </label><br/>
-        <input type="date" required th:field="${reportInput.endDate}"><br/>
-
-        <br/>
-        <button style="display:block;margin-top:24px!important" class="centered">Submit</button>
+    <form class="rpt-card rpt-filters" th:action="@{/report/loadsheet/history/submit}" method="post">
+        <div class="rpt-field rpt-tail">
+            <label for="tailNumber">Tail number</label>
+            <input type="text" maxlength="10" placeholder="e.g. CGKDV" required th:field="${reportInput.tailNumber}">
+        </div>
+        <div class="rpt-field">
+            <label for="startDate">From</label>
+            <input type="date" required th:field="${reportInput.startDate}">
+        </div>
+        <div class="rpt-field">
+            <label for="endDate">To</label>
+            <input type="date" required th:field="${reportInput.endDate}">
+        </div>
+        <button type="submit" class="rpt-button">Run report</button>
     </form>
 
     <!--loadSheets is null before the first submit, and empty when nothing matched-->
-    <p style="color: var(--main-color-text) !important" th:if="${reportInput.loadSheets != null and #lists.isEmpty(reportInput.loadSheets)}"
-       th:text="#{error.message.no.data.found.loading.history}">not found</p>
+    <div class="rpt-card rpt-empty"
+         th:if="${reportInput.loadSheets != null and #lists.isEmpty(reportInput.loadSheets)}">
+        <div class="rpt-empty-icon"><i class="fas fa-plane"></i></div>
+        <div class="rpt-empty-title" th:text="#{error.message.no.data.found.loading.history}">not found</div>
+        <div class="rpt-empty-hint" th:text="#{label.report.no.data.hint}">hint</div>
+    </div>
 
     <div th:if="${not #lists.isEmpty(reportInput.loadSheets)}"
          th:with="flights=${#lists.size(reportInput.loadSheets)},
                   passed=${reportInput.loadSheets.?[loadStatus == 'PASS'].size()}">
 
-        <p style="color: var(--main-color-text) !important" th:text="|${reportInput.tailNumber} from ${reportInput.startDate} to ${reportInput.endDate}. Flights: ${flights} (${passed} PASS, ${flights - passed} FAIL)|">summary</p>
+        <div class="rpt-results-heading">
+            <h3 th:text="${reportInput.tailNumber}">CGKDV</h3>
+            <span th:text="|${reportInput.startDate} to ${reportInput.endDate}|">dates</span>
+        </div>
 
-        <table class="wbb centered">
-            <thead>
-            <tr>
-                <th>Flight Date</th>
-                <th>Tail Number</th>
-                <th>Pilot</th>
-                <th>Front Seats (lb)</th>
-                <th>Rear Seats (lb)</th>
-                <th>Baggage (lb)</th>
-                <th>Fuel (US gal)</th>
-                <th>Total Weight (lb)</th>
-                <th>CG (in)</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="item : ${reportInput.loadSheets}">
-                <td th:text="${item.flightDate}"></td>
-                <td th:text="${item.tailNumber}"></td>
-                <td th:text="${item.pilotName}"></td>
-                <td th:text="${item.frontSeatWeight}"></td>
-                <td th:text="${item.rearSeatWeight}"></td>
-                <td th:text="${item.baggageWeight}"></td>
-                <td th:text="${item.fuelLoaded}"></td>
-                <td th:text="${item.totalWeight}"></td>
-                <td th:text="${#numbers.formatDecimal(item.centreOfGravity, 1, 2)}"></td>
-                <td th:text="${item.loadStatus}" th:classappend="${item.loadStatus == 'FAIL'} ? 'fail'"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="rpt-tiles">
+            <div class="rpt-card">
+                <div class="rpt-tile-label">Flights</div>
+                <div class="rpt-tile-value" th:text="${flights}">3</div>
+            </div>
+            <div class="rpt-card">
+                <div class="rpt-tile-label"><i class="fas fa-check-circle rpt-icon-good"></i>Passed</div>
+                <div class="rpt-tile-value" th:text="${passed}">2</div>
+            </div>
+            <div class="rpt-card">
+                <div class="rpt-tile-label"><i class="fas fa-times-circle rpt-icon-critical"></i>Failed</div>
+                <div class="rpt-tile-value" th:text="${flights - passed}">1</div>
+            </div>
+        </div>
 
-        <!--Light card like the form and table, so the navy bars and chart text show on the navy page-->
-        <div class="wbb" style="max-width:700px;margin:24px auto">
-            <canvas id="weightChart"></canvas>
+        <div class="rpt-card">
+            <div class="rpt-card-title">Total weight per flight</div>
+            <div class="rpt-card-caption">In pounds, against the Cessna 172S maximum gross weight. Hover a bar for the pilot.</div>
+            <div class="rpt-legend">
+                <span><span class="rpt-swatch rpt-swatch-pass"></span>Passed</span>
+                <span><span class="rpt-swatch rpt-swatch-fail"></span>Failed</span>
+            </div>
+            <div class="rpt-chart">
+                <canvas id="weightChart" role="img"
+                        aria-label="Bar chart of total weight per flight. The same values are in the load sheets table."></canvas>
+            </div>
+        </div>
+
+        <div class="rpt-card">
+            <div class="rpt-card-title">Load sheets</div>
+            <div class="rpt-card-caption">Oldest flight first. CG is in inches aft of the datum.</div>
+            <div class="rpt-table-wrap">
+                <table class="rpt-table">
+                    <thead>
+                    <tr>
+                        <th>Flight date</th>
+                        <th>Pilot</th>
+                        <th class="rpt-num">Front seats <span class="rpt-unit">lb</span></th>
+                        <th class="rpt-num">Rear seats <span class="rpt-unit">lb</span></th>
+                        <th class="rpt-num">Baggage <span class="rpt-unit">lb</span></th>
+                        <th class="rpt-num">Fuel <span class="rpt-unit">US gal</span></th>
+                        <th class="rpt-num">Total weight <span class="rpt-unit">lb</span></th>
+                        <th class="rpt-num">CG <span class="rpt-unit">in</span></th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${reportInput.loadSheets}">
+                        <td th:text="${item.flightDate}"></td>
+                        <td th:text="${item.pilotName}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.frontSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.rearSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.baggageWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.fuelLoaded, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.totalWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.centreOfGravity, 1, 2)}"></td>
+                        <td>
+                            <span th:if="${item.loadStatus == 'PASS'}" class="rpt-badge rpt-badge-pass">
+                                <i class="fas fa-check"></i><span th:text="${item.loadStatus}">PASS</span></span>
+                            <span th:unless="${item.loadStatus == 'PASS'}" class="rpt-badge rpt-badge-fail">
+                                <i class="fas fa-times"></i><span th:text="${item.loadStatus}">FAIL</span></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <script th:inline="javascript">
             const flightDates = [[${reportInput.loadSheets.![flightDate]}]];
+            const pilotNames = [[${reportInput.loadSheets.![pilotName]}]];
             const totalWeights = [[${reportInput.loadSheets.![totalWeight]}]];
             const loadStatuses = [[${reportInput.loadSheets.![loadStatus]}]];
+            const MAX_GROSS_WEIGHT = 2550;
+
+            //One series per status so the legend names both colours (null = no bar for that flight)
+            const weightsFor = status => totalWeights.map((weight, i) => loadStatuses[i] === status ? weight : null);
+
+            //Draws the maximum gross weight as a dashed line across the whole plot, labelled at the right
+            const maxGrossLine = {
+                id: 'maxGrossLine',
+                afterDatasetsDraw(chart) {
+                    const {ctx, chartArea, scales} = chart;
+                    const y = scales.y.getPixelForValue(MAX_GROSS_WEIGHT);
+                    ctx.save();
+                    ctx.strokeStyle = '#52514e';
+                    ctx.fillStyle = '#52514e';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(chartArea.left, y);
+                    ctx.lineTo(chartArea.right, y);
+                    ctx.stroke();
+                    ctx.font = '600 12px ' + Chart.defaults.font.family;
+                    ctx.textAlign = 'right';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText('Max gross ' + MAX_GROSS_WEIGHT.toLocaleString() + ' lb', chartArea.right, y - 4);
+                    ctx.restore();
+                }
+            };
+
+            Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+            Chart.defaults.color = '#52514e';
 
             new Chart(document.getElementById('weightChart'), {
                 type: 'bar',
                 data: {
                     labels: flightDates,
-                    datasets: [{
-                        label: 'Total Weight (lb)',
-                        data: totalWeights,
-                        //PASS flights in the project navy, FAIL flights in red
-                        backgroundColor: loadStatuses.map(status => status === 'PASS' ? '#1B3A5C' : '#C0392B')
-                    }, {
-                        type: 'line',
-                        label: 'Maximum Gross Weight (2550 lb)',
-                        data: flightDates.map(() => 2550),
-                        borderColor: '#C0392B',
-                        pointRadius: 0
-                    }]
-                }
+                    datasets: [
+                        {label: 'Passed', data: weightsFor('PASS'), backgroundColor: '#1B3A5C'},
+                        {label: 'Failed', data: weightsFor('FAIL'), backgroundColor: '#d03b3b'}
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    //Thin bars, rounded at the top and square on the baseline
+                    datasets: {bar: {skipNull: true, maxBarThickness: 24, borderRadius: 4, borderSkipped: 'start'}},
+                    scales: {
+                        x: {grid: {display: false}, border: {color: '#c3c2b7'}, ticks: {color: '#898781'}},
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: MAX_GROSS_WEIGHT * 1.1,
+                            grid: {color: '#e1e0d9'},
+                            border: {display: false},
+                            ticks: {color: '#898781', callback: value => value.toLocaleString()}
+                        }
+                    },
+                    plugins: {
+                        //The legend is HTML above the chart (rpt-legend)
+                        legend: {display: false},
+                        tooltip: {
+                            callbacks: {
+                                title: items => flightDates[items[0].dataIndex] + ' · ' + pilotNames[items[0].dataIndex],
+                                label: item => item.dataset.label + ': ' + item.parsed.y.toLocaleString() + ' lb'
+                            }
+                        }
+                    }
+                },
+                plugins: [maxGrossLine]
             });
         </script>
     </div>
-
 </div>
-
-<br></br>
 
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
