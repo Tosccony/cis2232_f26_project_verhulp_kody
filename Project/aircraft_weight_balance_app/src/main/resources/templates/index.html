@@ -1,45 +1,42 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
-    <title id="pageTitle">Aircraft Weight and Balance Sheet</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(null)}"></head>
 <body>
-<nav th:replace="fragments/navHeader :: navbar"></nav>
+<header th:replace="~{fragments/navHeader :: navbar('home')}"></header>
 
-<!--Styles are the rpt- classes at the end of styles.css-->
-<div class="rpt-page">
-    <div class="rpt-header">
-        <h2 class="title is-2" th:text="#{application.name}">Aircraft Weight and Balance Sheet</h2>
-        <div class="rpt-lede" th:text="#{label.home.description}">description</div>
+<main class="app-main">
+    <div class="page-header">
+        <h1 class="page-title" th:text="#{application.name}">Aircraft Weight and Balance Sheet</h1>
+        <p class="page-lede" th:text="#{label.home.description}">description</p>
     </div>
 
-    <div class="rpt-results-heading"><h3>Reports</h3></div>
-    <div class="rpt-list rpt-section">
-        <a class="rpt-card rpt-link-card" th:href="@{/report/loadsheet/history}">
-            <div class="rpt-card-title" th:text="#{label.report.loading.history}">Aircraft Loading History</div>
-            <div class="rpt-card-caption" th:text="#{label.report.loading.history.description}">description</div>
-            <div class="rpt-link-cta">Open report <i class="fas fa-arrow-right"></i></div>
+    <h2 class="section-title">Reports</h2>
+    <div class="link-grid">
+        <a class="card link-card" th:href="@{/report/loadsheet/history}">
+            <div class="card-title" th:text="#{label.report.loading.history}">Aircraft Loading History</div>
+            <div class="card-caption" th:text="#{label.report.loading.history.description}">description</div>
+            <div class="link-cta">Open report <i class="fas fa-arrow-right"></i></div>
         </a>
     </div>
 
-    <div class="rpt-results-heading"><h3>Cessna 172S limits</h3></div>
-    <div class="rpt-tiles">
-        <div class="rpt-card">
-            <div class="rpt-tile-label">Maximum gross weight</div>
-            <div class="rpt-tile-value">2,550 lb</div>
+    <h2 class="section-title">Cessna 172S limits</h2>
+    <div class="tiles">
+        <div class="card">
+            <div class="tile-label">Maximum gross weight</div>
+            <div class="tile-value">2,550 lb</div>
         </div>
-        <div class="rpt-card">
-            <div class="rpt-tile-label">Maximum baggage</div>
-            <div class="rpt-tile-value">120 lb</div>
+        <div class="card">
+            <div class="tile-label">Maximum baggage</div>
+            <div class="tile-value">120 lb</div>
         </div>
-        <div class="rpt-card">
-            <div class="rpt-tile-label">Centre of gravity range</div>
-            <div class="rpt-tile-value">35.0 to 47.3 in</div>
-            <div class="rpt-tile-note">Inches aft of the datum. The forward limit moves back to 41.0 in at 2,550 lb.</div>
+        <div class="card">
+            <div class="tile-label">Centre of gravity range</div>
+            <div class="tile-value">35.0 to 47.3 in</div>
+            <div class="tile-note">Inches aft of the datum. The forward limit moves back to 41.0 in at 2,550 lb.</div>
         </div>
     </div>
-</div>
+</main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

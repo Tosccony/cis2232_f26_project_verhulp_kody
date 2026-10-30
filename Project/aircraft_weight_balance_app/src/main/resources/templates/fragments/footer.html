@@ -1,15 +1,9 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-    <body>
-    <footer th:fragment="footer" class="footer ftr">
-        <div>
-            <div class="content has-text-centered">
-                <!-- BJM 20200602 Issue#1  ${serverTime}-->
-<!--                <span th:text="${session.currentDate}"></span> example accessing from the session-->
-                <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></span>&nbsp;&nbsp;<span th:text="#{label.business.name}">label business name</span>
-            </div>
-        </div>
-    </footer>
-    </body>
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<footer th:fragment="footer" class="app-footer">
+    <div class="app-footer-inner">
+        <span th:text="#{application.name}">Aircraft Weight and Balance Sheet</span>
+        <span>CIS-2232 · Fall 2026</span>
+    </div>
+</footer>
 </html>

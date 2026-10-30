@@ -1,33 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<body>
-<nav th:fragment="navbar" class="navbar nav" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a th:href="@{/}" class="vert-align">
-            <img src="/images/ic_launcher.png" class="logo"></span>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--section: home, reports or about, so that link is marked as the current page-->
+<header th:fragment="navbar(section)" class="app-header">
+    <div class="app-header-inner">
+        <a class="app-brand" th:href="@{/}">
+            <img src="/images/ic_launcher.png" alt="" width="36" height="36">
+            <span th:text="#{application.name}">Aircraft Weight and Balance Sheet</span>
         </a>
-
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" id="burg"
-           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');"
-           data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
+        <nav class="app-nav" aria-label="Main">
+            <a th:href="@{/}" th:attr="aria-current=${section == 'home'} ? 'page'">Home</a>
+            <a th:href="@{/report}" th:attr="aria-current=${section == 'reports'} ? 'page'">Reports</a>
+            <a th:href="@{/about}" th:attr="aria-current=${section == 'about'} ? 'page'">About</a>
+        </nav>
     </div>
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a th:href="@{/report}" href="/report" class="accent navbar-link">Reports</a>
-                <div class="accent-background navbar-dropdown">
-                    <a th:href="@{/report/loadsheet/history}" class="accent navbar-item"
-                       th:text="#{label.report.loading.history}">Loading history report</a>
-                </div>
-            </div>
-            <a th:href="@{/about}" href="/about" class="accent navbar-item">About</a>
-        </div>
-    </div>
-</nav>
-</body>
+</header>
 </html>

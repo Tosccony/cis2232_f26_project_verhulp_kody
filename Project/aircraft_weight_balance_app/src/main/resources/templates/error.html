@@ -1,13 +1,19 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:include="fragments/head :: headerFragment">
-        <title id="pageTitle">From head.html</title>
-    </head>
-    <body>
-    <nav th:replace="fragments/navHeader :: navbar"></nav>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{label.error})}"></head>
+<body>
+<header th:replace="~{fragments/navHeader :: navbar(null)}"></header>
 
-    <div class="container">
-        <h2 class="title is-2"><span th:text=#{label.error}></span></h2>
+<main class="app-main">
+    <div class="card empty-state">
+        <div class="empty-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <h1 class="empty-title" th:text="#{label.error}">Something went wrong</h1>
+        <!--Spring Boot puts the status code and its name in the model, e.g. 404 Not Found-->
+        <p class="empty-hint" th:if="${status}" th:text="|Error ${status}: ${error}|">Error 404: Not Found</p>
+        <a class="btn btn-primary" th:href="@{/}">Back to home</a>
     </div>
-    <footer th:replace="fragments/footer :: footer"></footer>
-    </body>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
 </html>

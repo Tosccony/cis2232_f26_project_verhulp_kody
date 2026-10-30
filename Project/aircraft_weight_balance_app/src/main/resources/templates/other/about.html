@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
-    <title id="pageTitle" th:text="#{application.name}">App name</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{about})}"></head>
 <body>
-<nav th:replace="fragments/navHeader :: navbar"></nav>
+<header th:replace="~{fragments/navHeader :: navbar('about')}"></header>
 
-<!--Styles are the rpt- classes at the end of styles.css-->
-<div class="rpt-page">
-    <div class="rpt-header">
-        <h2 class="title is-2" th:text="#{about}">About</h2>
-        <div class="rpt-lede">CIS-2232 project, Fall 2026.</div>
+<main class="app-main">
+    <div class="page-header">
+        <h1 class="page-title" th:text="#{about}">About</h1>
+        <p class="page-lede">CIS-2232 project, Fall 2026.</p>
     </div>
 
-    <div class="rpt-card">
-        <div class="rpt-card-title">Project team</div>
-        <table class="rpt-table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Role</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Ben</td>
-                <td>Business Client</td>
-            </tr>
-            <tr>
-                <td>Kody Verhulp</td>
-                <td>Lead Developer</td>
-            </tr>
-            <tr>
-                <td>Nick</td>
-                <td>Quality Control</td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="card-title">Project team</div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Ben Proulx</td>
+                    <td>Business Client</td>
+                </tr>
+                <tr>
+                    <td>Kody Verhulp</td>
+                    <td>Lead Developer</td>
+                </tr>
+                <tr>
+                    <td>Nick Brown</td>
+                    <td>Quality Control</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

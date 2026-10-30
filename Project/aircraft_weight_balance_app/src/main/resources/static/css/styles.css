@@ -1,629 +1,418 @@
-html{
-    overflow: auto !important;
-    min-width:246px;
-
-}
-
-:root {
-    /*Variable for team color*/
-    /*light ac3e37 main 770711 dark 470000*/
-    --main-color-light: #1B3A5C ;
-    --main-color-primary: #1B3A5C ;
-    --main-color-dark: #000000;
-    --main-color-text: #ffffff;
-    --main-color-bright:#8FB8DE;
-
-}
-
-/*input:not(.hidden){
-    display:inline-block;
-    float:right
-}*/
-.cd{
-    color:#F00!important;
-/*    font-weight:bold;*/
-/*    margin-bottom:-48px*/
-}
-label{
-    margin-right:8px
-}
-
-/*Make body height 100% so that footer stays at the bottom and position relative to the footer*/
-body {
-    position: relative;
-    height: 100%;
-    min-height: 100vh;
-    background: var(--main-color-light);
-}
-
-th,tr,td{
-    text-align:left;
-}
-td{
-    padding:0!important
-}
-tr th{
-    line-height:1;
-    padding-bottom:8px
-}
-tr:nth-child(even){
-    background-color: #FFF
-}
-.a{
-    padding:0 32px 0 0
-}
-h2{
-    /*    margin-bottom:-10px!important*/
-}
-table{
-    padding:0!important;
-    display:inline-block!important
-}
-
-.logo{
-    height: 40px
-}
-.no-link {
-    color: inherit
-}
-
-.no-link:hover {
-    text-decoration: none;
-    color: inherit
-}
-
-.table-title {
-    display: flex;
-    justify-content: space-between
-}
-
-/*TODO:merge this with centered instead.*/
-.table-container {
-    margin: 0 auto
-}
-
-.field-id {
-    width: 20px;
-    display: none
-}
-
-.flex-sp-btw {
-    display: flex;
-    /*TODO: find way to tell NetBeans to ignore this.*/
-    justify-content: space-evenly;
-}
-
-.nav-flex {
-    display: flex;
-    justify-content: space-between
-}
-
-.links > a {
-    margin-right: 24px
-}
-
-.nav {
-    margin-bottom: 50px;
-    background: var(--main-color-dark)
-}
-
-.ftr {
-    margin-top: 50px;
-    padding: 20px;
-    background: var(--main-color-dark);
-    color: var(--main-color-text);
-    bottom: 0;
-    /*    position:absolute;*/
-    width:100%
-}
-
-.vert-align {
-    display: flex;
-    align-items: center
-}
-.centered{
-    margin: 0 auto
-}
-
-/*drop down link*/
-.ddl{
-    margin:0 8px 0 8px;
-    font-size:28px
-}
-
-/*.centered is a lie.*/
-.centered2{
-    text-align:center
-}
-
-/*reason why this ain't up there is because i want him to see it
-TODO: change to html instead of using root.*/
-/*:root{
-    background-color:var(--main-color-light);
-}*/
-
-/*blue on blisque is ugly.*/
-.navbar-link:not(.is-arrowless)::after{
-    border-color:var(--main-color-primary) !important;
-}
-
-/*better constrast, otherwise you can't see anything on a bad monitor.'*/
-.navbar-link,.navbar-link:focus,.navbar-bgn{
-    color: var(--main-color-text) !important
-}
-
-.title{
-    color: var(--main-color-bright) !important
-}
-
-.accent{
-    color: var(--main-color-bright) !important;
-}
-
-.accent-background{
-    background-color: var(--main-color-dark) !important;
-}
-
-.error{
-    color: red !important
-}
-.success{
-    color: green !important
-}
-
-
-/*better constrast, otherwise you can't see anything on a bad monitor.'*/
-body,p,strong,th{
-    color: #000 !important
-}
-
-
-/*overriding the hover*/
-.navbar-link:hover{
-    /*    background-color: #fff !important*/
-    /*    background-color: var(--main-color-primary) !important;*/
-    color: var(--main-color-dark)!important;
-}
-
-.navbar-link:active{
-    /*    background-color: #fff !important*/
-    /*    background-color: var(--main-color-primary) !important;*/
-    color: var(--main-color-dark)!important;
-}
-
-.navbar-item:hover{
-    /*    background-color: var(--main-color-primary) !important;*/
-}
-
-/*overriding the hover*/
-.navbar-item:visited{
-    color: var(--main-color-text) !important;
-    /*    background-color: var(--main-color-primary);*/
-}
-
-
-/*fixes weird issue with the index button.*/
-.navbar-bgn{
-    padding:1rem 1rem
-}
-
-.navbar-bgn:focus{
-    /*    background-color:var(--main-color-light);*/
-}
-
-.navbar-bgn:hover{
-    /*    background-color:var(--main-color-light);*/
-}
-
-/*this gives me a headache*/
-@media (max-width:1023px){
-    .navbar-bgn{
-        padding:1rem .75rem !important
-    }
-
-    /*instead of the hamburger button taking up all the space, just force it to
-    live with the object on the left.*/
-    .navbar-brand{
-        right:0;
-        position:absolute;
-        z-index:1
-    }
-
-    /*not perfect, but definitively better than before where the text would just
-    appear below it...*/
-    #navbarBasicExample{
-        width:100%;
-        position:absolute
-    }
-
-    /*align arrows with hamburger button.*/
-    .navbar-link:not(.is-arrowless)::after{
-        margin-right: 3.15px
-    }
-    /*window size compatibility*/
-    .ddl{
-        display:inline-block;
-        margin-top:16px !important
-    }
-    .nav{
-        margin-bottom:16px !important
-    }
-    .navbar-menu.is-active{
-        padding:0
-    }
-    .navbar-index{
-        padding-bottom:0.86rem;
-        padding-top:0.86rem;
-        margin-right:52px
-    }
-}
-/*white background box.*/
-.wbb, .ddl{
-    padding:0px 8px 0px 8px !important;
-    background-color:#ccc !important;
-    border:8px #ccc solid !important;
-    border-radius:12px !important;
-    white-space:nowrap !important
-}
-/*prevent text from disappearing*/
-@media screen and (min-width: 1024px){
-    .navbar-dropdown .navbar-item{
-        white-space:unset!important;
-        /*        background-color: var(--main-color-primary) !important;*/
-    }
-
-    .navbar-dropdown a.navbar-item{
-        padding-right: 16px!important
-    }
-
-    .navbar-end{
-        padding-right: 5px!important
-    }
-}
-
-.container{
-    background: var(--main-color-light);
-
-}
-.container button {
-    margin-top: 30px;
-}
-/*
-Arrange invoice list tittle and add button
-#invoiceLitsTittle {
-    width: 80%;
-    margin: auto;
-    display: flex;
-    justify-content: space-around;
-}*/
-
-/*Adjust invoiceAdd fields witdh*/
-.field:not(:last-child) {
-    margin: 0 6rem 0.75rem 6rem;
-}
-/*
-#btnInvoiceAdd {
-    margin-left: 6rem;
-}*/
-
-/*Table styles */
-.tableStyles {
-    padding: 0;
-    background: #ccc;
-    display: inline-block;
-    border: 8px #ccc solid;
-    border-collapse: collapse;
-    border-radius: 12px;
-    white-space: nowrap;
-}
-
-.tableStyles tr:nth-child(odd) {
-    background-color: #fff;
-}
-
-.tableStyles th, td {
-    padding-right: 45px;
-}
-
-.tableStyles th:first-child,
-.tableStyles td:first-child {
-    padding-left: 10px;
-}
-
-.tableStyles th:last-child,
-.tableStyles td:last-child {
-    padding-right: 10px;
-}
-
 /*-----------------------------------------------------------------------------
- Report pages (Sprint 2). Every class starts with rpt- so no other page changes.
- Text inside the cards uses div/span, not p/strong, because of the global
- "body,p,strong,th { color:#000 !important }" rule above. The few !important
- rules below beat the global table/td/th rules.
+ Aircraft Weight and Balance Sheet: the only stylesheet the app loads.
+ Navy (the team colour) is the header, buttons, links and chart; the pages
+ are light so the cards, tables and chart are easy to read.
 -----------------------------------------------------------------------------*/
-.rpt-page {
-    --rpt-surface: #ffffff;
-    --rpt-ink: #0b0b0b;
-    --rpt-ink-secondary: #52514e;
-    --rpt-ink-muted: #898781;
-    --rpt-hairline: #e1e0d9;
-    --rpt-border: #c3c2b7;
-    --rpt-good: #0ca30c;
-    --rpt-good-text: #006300;
-    --rpt-critical: #d03b3b;
-    --rpt-critical-text: #a82525;
-    max-width: 1080px;
+:root {
+    /*Team colour*/
+    --main-color-light: #1B3A5C;
+    --main-color-primary: #1B3A5C;
+    --main-color-dark: #12283F;
+    --main-color-text: #FFFFFF;
+    --main-color-bright: #8FB8DE;
+
+    --page-bg: #F4F6F9;
+    --surface: #FFFFFF;
+    --ink: #14202E;
+    --ink-secondary: #4A5666;
+    --ink-muted: #6B7686;
+    --border: #D5DBE3;
+    --hairline: #E6EAF0;
+    --good: #0CA30C;
+    --good-text: #006300;
+    --good-bg: #E6F4E6;
+    --critical: #D03B3B;
+    --critical-text: #A82525;
+    --critical-bg: #FBE9E9;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/*Column layout so the footer stays at the bottom of short pages*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--page-bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p {
+    margin: 0;
+}
+
+a {
+    color: var(--main-color-primary);
+    text-decoration: none;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--main-color-bright);
+    outline-offset: 2px;
+}
+
+/* Header */
+.app-header {
+    color: var(--main-color-text);
+    background: var(--main-color-primary);
+}
+
+.app-header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 24px;
+    max-width: 1112px;
     margin: 0 auto;
-    padding: 40px 16px 56px;
+    padding: 0 16px;
 }
 
-.rpt-header {
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--main-color-text);
+}
+
+.app-brand img {
+    display: block;
+}
+
+.app-nav {
+    display: flex;
+    gap: 8px;
+}
+
+/*The current page is underlined in the bright team colour*/
+.app-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    padding: 0 8px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.78);
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid transparent;
+}
+
+.app-nav a:hover {
+    color: var(--main-color-text);
+}
+
+.app-nav a[aria-current="page"] {
+    color: var(--main-color-text);
+    border-bottom-color: var(--main-color-bright);
+}
+
+/* Page */
+.app-main {
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 1112px;
+    margin: 0 auto;
+    padding: 32px 16px 56px;
+}
+
+.breadcrumb {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--ink-muted);
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.page-header {
     margin-bottom: 24px;
 }
 
-.rpt-header .title {
-    margin-bottom: 8px !important;
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
 }
 
-.rpt-lede {
-    max-width: 640px;
-    font-size: 17px;
-    color: #d6e2ef;
+.page-lede {
+    max-width: 680px;
+    margin-top: 6px;
+    font-size: 16px;
+    color: var(--ink-secondary);
 }
 
-.rpt-card {
-    margin-bottom: 24px;
-    padding: 24px;
-    color: var(--rpt-ink);
-    background: var(--rpt-surface);
-    border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.18);
-}
-
-.rpt-card-title {
-    margin-bottom: 4px;
+.section-title {
+    margin: 32px 0 12px;
     font-size: 18px;
     font-weight: 600;
-    color: var(--rpt-ink);
 }
 
-.rpt-card-caption {
+.card {
+    margin-bottom: 24px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(20, 32, 46, 0.06);
+}
+
+.card-title {
+    margin-bottom: 4px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.card-caption {
     margin-bottom: 16px;
     font-size: 14px;
-    color: var(--rpt-ink-secondary);
+    color: var(--ink-secondary);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: var(--main-color-text);
+    background: var(--main-color-primary);
+}
+
+.btn-primary:hover {
+    background: var(--main-color-dark);
+}
+
+.btn-secondary {
+    color: var(--ink);
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--page-bg);
 }
 
 /* Report criteria: one row of fields that wraps on narrow screens */
-.rpt-filters {
+.filters {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
     gap: 16px;
 }
 
-.rpt-field {
+.field {
     display: flex;
     flex: 1 1 150px;
     flex-direction: column;
 }
 
-.rpt-field label {
-    margin: 0 0 6px;
+.field label {
+    margin-bottom: 6px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--rpt-ink);
 }
 
-.rpt-field input,
-.rpt-field select {
-    box-sizing: border-box;
+.field input,
+.field select {
     width: 100%;
     height: 42px;
-    margin: 0;
     padding: 0 12px;
-    font-size: 16px;
-    line-height: normal;
-    color: var(--rpt-ink);
-    background: #fff;
-    border: 1px solid var(--rpt-border);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    box-shadow: none;
 }
 
-.rpt-field input:focus,
-.rpt-field select:focus {
+/*Same chevron in every browser instead of the native arrow*/
+.field select {
+    padding-right: 36px;
+    appearance: none;
+    background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%234A5666' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+    cursor: pointer;
+}
+
+.field input:focus,
+.field select:focus {
     outline: none;
     border-color: var(--main-color-primary);
     box-shadow: 0 0 0 3px var(--main-color-bright);
 }
 
-.rpt-field select {
-    cursor: pointer;
-}
-
-.rpt-actions {
+.actions {
     display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.rpt-clear {
-    font-weight: 600;
-    color: var(--main-color-primary);
-}
-
-.rpt-filters .rpt-button {
-    height: 42px;
-    margin: 0;
-    padding: 0 24px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    background: var(--main-color-primary);
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.rpt-filters .rpt-button:hover {
-    background: #12283f;
-}
-
-.rpt-filters .rpt-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--main-color-bright);
+    gap: 12px;
 }
 
 /* Results */
-.rpt-results-heading {
+.results-heading {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 12px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin: 8px 0 16px;
-    color: #d6e2ef;
 }
 
-.rpt-results-heading h3 {
-    margin: 0;
-    font-size: 28px;
+.results-heading h2 {
+    font-size: 22px;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
 }
 
-.rpt-tiles {
+.results-meta {
+    color: var(--ink-secondary);
+}
+
+.tiles {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 16px;
     margin-bottom: 24px;
 }
 
-.rpt-tiles .rpt-card {
+.tiles .card {
     margin-bottom: 0;
     padding: 20px 24px;
 }
 
-.rpt-tile-label {
+.tile-label {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    color: var(--rpt-ink-secondary);
+    color: var(--ink-secondary);
 }
 
-.rpt-tile-value {
+.tile-value {
     margin-top: 4px;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     line-height: 1.2;
-    color: var(--rpt-ink);
+    font-variant-numeric: tabular-nums;
 }
 
-.rpt-tile-note {
-    margin-top: 4px;
+.tile-note {
+    margin-top: 6px;
     font-size: 13px;
-    color: var(--rpt-ink-secondary);
+    color: var(--ink-secondary);
 }
 
-.rpt-section {
-    margin-bottom: 32px;
+.icon-good {
+    color: var(--good);
 }
 
-.rpt-icon-good {
-    color: var(--rpt-good);
+.icon-critical {
+    color: var(--critical);
 }
 
-.rpt-icon-critical {
-    color: var(--rpt-critical);
-}
-
-.rpt-legend {
+.legend {
     display: flex;
     flex-wrap: wrap;
     gap: 4px 16px;
     margin-bottom: 12px;
     font-size: 13px;
-    color: var(--rpt-ink-secondary);
+    color: var(--ink-secondary);
 }
 
-.rpt-legend > span {
+.legend > span {
     display: inline-flex;
     align-items: center;
     gap: 6px;
 }
 
-.rpt-swatch {
+.swatch {
     width: 10px;
     height: 10px;
     border-radius: 2px;
 }
 
 /* Same colours as the bars in the chart script */
-.rpt-swatch-pass {
+.swatch-pass {
     background: var(--main-color-primary);
 }
 
-.rpt-swatch-fail {
-    background: var(--rpt-critical);
+.swatch-fail {
+    background: var(--critical);
 }
 
 /* Fixed height includes the x-axis labels, so the card never scrolls */
-.rpt-chart {
+.chart {
     position: relative;
     height: 320px;
 }
 
-.rpt-table-wrap {
+/* Tables */
+.table-wrap {
     overflow-x: auto;
 }
 
-.rpt-page table.rpt-table {
-    display: table !important;
+.data-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 15px;
 }
 
-.rpt-page .rpt-table th {
-    padding: 0 12px 10px !important;
+.data-table th {
+    padding: 0 12px 10px;
     font-size: 13px;
     font-weight: 600;
-    line-height: 1.3;
     text-align: left;
     vertical-align: bottom;
     white-space: nowrap;
-    color: var(--rpt-ink-secondary) !important;
-    border-bottom: 1px solid var(--rpt-border);
+    color: var(--ink-secondary);
+    border-bottom: 1px solid var(--border);
 }
 
-.rpt-page .rpt-table td {
-    padding: 12px !important;
+.data-table td {
+    padding: 12px;
     white-space: nowrap;
-    color: var(--rpt-ink);
-    border-bottom: 1px solid var(--rpt-hairline);
+    border-bottom: 1px solid var(--hairline);
 }
 
-.rpt-page .rpt-table tbody tr:last-child td {
+.data-table tbody tr:last-child td {
     border-bottom: 0;
 }
 
-.rpt-page .rpt-table tbody tr:hover {
-    background: #f4f6f9;
+.data-table tbody tr:hover {
+    background: var(--page-bg);
 }
 
-.rpt-page .rpt-table .rpt-num {
+.data-table .num {
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
 
-.rpt-unit {
+.unit {
     font-weight: 400;
-    color: var(--rpt-ink-muted);
+    color: var(--ink-muted);
 }
 
 /* PASS/FAIL never relies on colour alone: icon + text in every badge */
-.rpt-badge {
+.badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -634,67 +423,147 @@ Arrange invoice list tittle and add button
     border-radius: 999px;
 }
 
-.rpt-badge-pass {
-    color: var(--rpt-good-text);
-    background: #e6f4e6;
+.badge-pass {
+    color: var(--good-text);
+    background: var(--good-bg);
 }
 
-.rpt-badge-fail {
-    color: var(--rpt-critical-text);
-    background: #fbe9e9;
+.badge-fail {
+    color: var(--critical-text);
+    background: var(--critical-bg);
 }
 
-.rpt-empty {
-    padding: 40px 24px;
+/* No results, and the error page */
+.empty-state {
+    padding: 48px 24px;
     text-align: center;
 }
 
-.rpt-empty-icon {
+.empty-icon {
     margin-bottom: 12px;
     font-size: 28px;
-    color: var(--rpt-ink-muted);
+    color: var(--ink-muted);
 }
 
-.rpt-empty-title {
+.empty-title {
     font-size: 18px;
     font-weight: 600;
 }
 
-.rpt-empty-hint {
+.empty-hint {
     margin-top: 4px;
-    color: var(--rpt-ink-secondary);
+    color: var(--ink-secondary);
 }
 
-/* Reports list */
-.rpt-list {
+.empty-state .btn {
+    margin-top: 20px;
+}
+
+/* Link cards (home and reports pages) */
+.link-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
 }
 
-a.rpt-link-card {
+a.link-card {
     display: block;
     margin-bottom: 0;
-    text-decoration: none;
-    transition: box-shadow 0.15s, transform 0.15s;
+    color: var(--ink);
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-a.rpt-link-card:hover,
-a.rpt-link-card:focus-visible {
-    outline: none;
-    transform: translateY(-2px);
-    box-shadow: 0 0 0 3px var(--main-color-bright), 0 12px 28px rgba(0, 0, 0, 0.25);
+a.link-card:hover {
+    border-color: var(--main-color-bright);
+    box-shadow: 0 6px 20px rgba(20, 32, 46, 0.10);
 }
 
-.rpt-link-card .rpt-card-caption {
+.link-card .card-caption {
     margin-bottom: 0;
 }
 
-.rpt-link-cta {
+.link-cta {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-top: 16px;
     font-weight: 600;
     color: var(--main-color-primary);
+}
+
+/* Footer */
+.app-footer {
+    border-top: 1px solid var(--hairline);
+    background: var(--surface);
+}
+
+.app-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
+    max-width: 1112px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    font-size: 14px;
+    color: var(--ink-muted);
+}
+
+/* Printing: just the report, landscape so the whole table fits */
+.print-only {
+    display: none;
+}
+
+@media print {
+    @page {
+        size: landscape;
+        margin: 12mm;
+    }
+
+    body {
+        background: #fff;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .app-header, .app-footer, .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    .app-main {
+        max-width: none;
+        padding: 0;
+    }
+
+    .card {
+        box-shadow: none;
+    }
+
+    .tiles, .chart-card, .data-table tr {
+        break-inside: avoid;
+    }
+
+    /*The page script redraws the chart for paper; this keeps it inside the margins*/
+    .chart {
+        height: auto;
+    }
+
+    .chart canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /*Tighter table so all ten columns fit across the page*/
+    .table-wrap {
+        overflow: visible;
+    }
+
+    .data-table th, .data-table td {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
 }

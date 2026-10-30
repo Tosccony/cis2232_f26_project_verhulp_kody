@@ -1,37 +1,15 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:fragment="headerFragment">
-        <meta charset="UTF-8"></meta>
-        <title id="pageTitle" th:text="#{application.name}">Sample App</title>
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=2" />
-        
-        <!--        BJM 20220616 adding material design -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
-        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet"></link>
-        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-
-
-        <!--        BJM 20201023 Adding imports for the Bootstrap data table-->
-        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap.min.css"
-              th:href="@{/webjars/bootstrap/2.3.0/css/bootstrap.min.css}" rel="stylesheet" />
-
-<!--        TODO Sprint 5 cleanup-->
-        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css"/>
-
-        <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-trendline"></script>
-
-
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
-        <link rel="stylesheet" href="/css/styles.css"/>
-        <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
-    </head>
-    <body>
-
-    </body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--title: the page name for the browser tab, or null on the home page-->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title != null} ? ${title} + ' – ' + #{application.name} : #{application.name}">Aircraft Weight and Balance Sheet</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
 </html>

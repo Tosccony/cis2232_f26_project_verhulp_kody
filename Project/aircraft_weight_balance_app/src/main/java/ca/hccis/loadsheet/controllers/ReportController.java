@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -30,16 +29,12 @@ public class ReportController {
     /**
      * Send the user to list of reports view.
      *
-     * @param model
-     * @param session
      * @return To the appropriate view
      * @author BJM
      * @since 20251009
      */
     @RequestMapping("")
-    public String home(Model model, HttpSession session) {
-
-        //BJM 20200602 Issue#1 Set the current date in the session
+    public String home() {
         logger.info("Running the reports controller base method");
         return "report/list";
     }

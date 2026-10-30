@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head">
-    <title id="pageTitle">Report</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(#{label.report.loading.history})}"></head>
 <body>
-<nav th:replace="fragments/navHeader :: navbar"></nav>
+<header th:replace="~{fragments/navHeader :: navbar('reports')}"></header>
 
-<!--Styles are the rpt- classes at the end of styles.css-->
-<div class="rpt-page">
-    <div class="rpt-header">
-        <h2 class="title is-2" th:text="#{label.report.loading.history}">Aircraft Loading History</h2>
-        <div class="rpt-lede" th:text="#{label.report.loading.history.description}">description</div>
+<main class="app-main">
+    <nav class="breadcrumb no-print" aria-label="Breadcrumb">
+        <a th:href="@{/report}">Reports</a>
+        <span aria-hidden="true">/</span>
+        <span th:text="#{label.report.loading.history}">Aircraft Loading History</span>
+    </nav>
+
+    <div class="page-header">
+        <h1 class="page-title" th:text="#{label.report.loading.history}">Aircraft Loading History</h1>
+        <p class="page-lede no-print" th:text="#{label.report.loading.history.description}">description</p>
+        <p class="page-lede print-only"
+           th:text="#{application.name} + ' · Printed ' + ${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm')}">printed</p>
     </div>
 
     <!--Every criterion is optional: leave them all blank to list every load sheet-->
-    <form class="rpt-card rpt-filters" th:action="@{/report/loadsheet/history/submit}" method="post">
-        <div class="rpt-field">
+    <form class="card filters no-print" th:action="@{/report/loadsheet/history/submit}" method="post">
+        <div class="field">
             <label for="tailNumber">Aircraft</label>
             <select th:field="${reportInput.tailNumber}">
                 <option value="">All aircraft</option>
                 <option th:each="tail : ${tailNumbers}" th:value="${tail}" th:text="${tail}">CGKDV</option>
             </select>
         </div>
-        <div class="rpt-field">
+        <div class="field">
             <label for="pilotName">Pilot</label>
             <input type="text" maxlength="100" placeholder="Any pilot" th:field="${reportInput.pilotName}">
         </div>
-        <div class="rpt-field">
+        <div class="field">
             <label for="loadStatus">Status</label>
             <select th:field="${reportInput.loadStatus}">
                 <option value="">Any</option>
@@ -34,81 +39,86 @@
                 <option value="FAIL">FAIL</option>
             </select>
         </div>
-        <div class="rpt-field">
+        <div class="field">
             <label for="startDate">From</label>
             <input type="date" th:field="${reportInput.startDate}">
         </div>
-        <div class="rpt-field">
+        <div class="field">
             <label for="endDate">To</label>
             <input type="date" th:field="${reportInput.endDate}">
         </div>
-        <div class="rpt-actions">
-            <button type="submit" class="rpt-button">Run report</button>
-            <a class="rpt-clear" th:href="@{/report/loadsheet/history}">Clear</a>
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Run report</button>
+            <a class="btn btn-secondary" th:href="@{/report/loadsheet/history}">Clear</a>
         </div>
     </form>
 
     <!--loadSheets is null before the first submit, and empty when nothing matched-->
-    <div class="rpt-card rpt-empty"
+    <div class="card empty-state"
          th:if="${reportInput.loadSheets != null and #lists.isEmpty(reportInput.loadSheets)}">
-        <div class="rpt-empty-icon"><i class="fas fa-plane"></i></div>
-        <div class="rpt-empty-title" th:text="#{error.message.no.data.found.loading.history}">not found</div>
-        <div class="rpt-empty-hint" th:text="#{label.report.no.data.hint}">hint</div>
+        <div class="empty-icon"><i class="fas fa-plane"></i></div>
+        <div class="empty-title" th:text="#{error.message.no.data.found.loading.history}">not found</div>
+        <div class="empty-hint" th:text="#{label.report.no.data.hint}">hint</div>
     </div>
 
     <div th:if="${not #lists.isEmpty(reportInput.loadSheets)}"
          th:with="flights=${#lists.size(reportInput.loadSheets)},
                   passed=${reportInput.loadSheets.?[loadStatus == 'PASS'].size()}">
 
-        <div class="rpt-results-heading">
-            <h3 th:text="${reportInput.aircraftLabel}">CGKDV</h3>
-            <span th:text="${reportInput.filterSummary}">criteria</span>
+        <div class="results-heading">
+            <div>
+                <h2 th:text="${reportInput.aircraftLabel}">CGKDV</h2>
+                <div class="results-meta" th:text="${reportInput.filterSummary}">criteria</div>
+            </div>
+            <button type="button" class="btn btn-secondary no-print" onclick="window.print()">
+                <i class="fas fa-print"></i>Print
+            </button>
         </div>
 
-        <div class="rpt-tiles">
-            <div class="rpt-card">
-                <div class="rpt-tile-label">Flights</div>
-                <div class="rpt-tile-value" th:text="${flights}">3</div>
+        <div class="tiles">
+            <div class="card">
+                <div class="tile-label">Flights</div>
+                <div class="tile-value" th:text="${flights}">3</div>
             </div>
-            <div class="rpt-card">
-                <div class="rpt-tile-label"><i class="fas fa-check-circle rpt-icon-good"></i>Passed</div>
-                <div class="rpt-tile-value" th:text="${passed}">2</div>
+            <div class="card">
+                <div class="tile-label"><i class="fas fa-check-circle icon-good"></i>Passed</div>
+                <div class="tile-value" th:text="${passed}">2</div>
             </div>
-            <div class="rpt-card">
-                <div class="rpt-tile-label"><i class="fas fa-times-circle rpt-icon-critical"></i>Failed</div>
-                <div class="rpt-tile-value" th:text="${flights - passed}">1</div>
+            <div class="card">
+                <div class="tile-label"><i class="fas fa-times-circle icon-critical"></i>Failed</div>
+                <div class="tile-value" th:text="${flights - passed}">1</div>
             </div>
         </div>
 
-        <div class="rpt-card">
-            <div class="rpt-card-title">Total weight per flight</div>
-            <div class="rpt-card-caption">In pounds, against the Cessna 172S maximum gross weight. Hover a bar for the pilot.</div>
-            <div class="rpt-legend">
-                <span><span class="rpt-swatch rpt-swatch-pass"></span>Passed</span>
-                <span><span class="rpt-swatch rpt-swatch-fail"></span>Failed</span>
+        <div class="card chart-card">
+            <div class="card-title">Total weight per flight</div>
+            <div class="card-caption">In pounds, against the Cessna 172S maximum gross weight.<span class="no-print"> Hover a bar for the pilot.</span></div>
+            <div class="legend">
+                <span><span class="swatch swatch-pass"></span>Passed</span>
+                <span><span class="swatch swatch-fail"></span>Failed</span>
             </div>
-            <div class="rpt-chart">
+            <div class="chart">
                 <canvas id="weightChart" role="img"
                         aria-label="Bar chart of total weight per flight. The same values are in the load sheets table."></canvas>
             </div>
         </div>
 
-        <div class="rpt-card">
-            <div class="rpt-card-title">Load sheets</div>
-            <div class="rpt-card-caption">Oldest flight first. CG is in inches aft of the datum.</div>
-            <div class="rpt-table-wrap">
-                <table class="rpt-table">
+        <div class="card">
+            <div class="card-title">Load sheets</div>
+            <div class="card-caption">Oldest flight first. CG is in inches aft of the datum.</div>
+            <div class="table-wrap">
+                <table class="data-table">
                     <thead>
                     <tr>
                         <th>Flight date</th>
                         <th>Aircraft</th>
                         <th>Pilot</th>
-                        <th class="rpt-num">Front seats <span class="rpt-unit">lb</span></th>
-                        <th class="rpt-num">Rear seats <span class="rpt-unit">lb</span></th>
-                        <th class="rpt-num">Baggage <span class="rpt-unit">lb</span></th>
-                        <th class="rpt-num">Fuel <span class="rpt-unit">US gal</span></th>
-                        <th class="rpt-num">Total weight <span class="rpt-unit">lb</span></th>
-                        <th class="rpt-num">CG <span class="rpt-unit">in</span></th>
+                        <th class="num">Front seats <span class="unit">lb</span></th>
+                        <th class="num">Rear seats <span class="unit">lb</span></th>
+                        <th class="num">Baggage <span class="unit">lb</span></th>
+                        <th class="num">Fuel <span class="unit">US gal</span></th>
+                        <th class="num">Total weight <span class="unit">lb</span></th>
+                        <th class="num">CG <span class="unit">in</span></th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -117,16 +127,16 @@
                         <td th:text="${item.flightDate}"></td>
                         <td th:text="${item.tailNumber}"></td>
                         <td th:text="${item.pilotName}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.frontSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.rearSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.baggageWeight, 1, 'COMMA', 1, 'POINT')}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.fuelLoaded, 1, 'COMMA', 1, 'POINT')}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.totalWeight, 1, 'COMMA', 1, 'POINT')}"></td>
-                        <td class="rpt-num" th:text="${#numbers.formatDecimal(item.centreOfGravity, 1, 2)}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.frontSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.rearSeatWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.baggageWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.fuelLoaded, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.totalWeight, 1, 'COMMA', 1, 'POINT')}"></td>
+                        <td class="num" th:text="${#numbers.formatDecimal(item.centreOfGravity, 1, 2)}"></td>
                         <td>
-                            <span th:if="${item.loadStatus == 'PASS'}" class="rpt-badge rpt-badge-pass">
+                            <span th:if="${item.loadStatus == 'PASS'}" class="badge badge-pass">
                                 <i class="fas fa-check"></i><span th:text="${item.loadStatus}">PASS</span></span>
-                            <span th:unless="${item.loadStatus == 'PASS'}" class="rpt-badge rpt-badge-fail">
+                            <span th:unless="${item.loadStatus == 'PASS'}" class="badge badge-fail">
                                 <i class="fas fa-times"></i><span th:text="${item.loadStatus}">FAIL</span></span>
                         </td>
                     </tr>
@@ -135,6 +145,8 @@
             </div>
         </div>
 
+        <!--Fixed version, so a new Chart.js release can't change or break the chart-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js"></script>
         <script th:inline="javascript">
             const flightDates = [[${reportInput.loadSheets.![flightDate]}]];
             const flightTails = [[${reportInput.loadSheets.![tailNumber]}]];
@@ -142,6 +154,10 @@
             const totalWeights = [[${reportInput.loadSheets.![totalWeight]}]];
             const loadStatuses = [[${reportInput.loadSheets.![loadStatus]}]];
             const MAX_GROSS_WEIGHT = 2550;
+
+            //Colours come from styles.css so the chart matches the rest of the page
+            const css = getComputedStyle(document.documentElement);
+            const colour = name => css.getPropertyValue(name).trim();
 
             //One series per status so the legend names both colours (null = no bar for that flight)
             const weightsFor = status => totalWeights.map((weight, i) => loadStatuses[i] === status ? weight : null);
@@ -153,8 +169,8 @@
                     const {ctx, chartArea, scales} = chart;
                     const y = scales.y.getPixelForValue(MAX_GROSS_WEIGHT);
                     ctx.save();
-                    ctx.strokeStyle = '#52514e';
-                    ctx.fillStyle = '#52514e';
+                    ctx.strokeStyle = colour('--ink-secondary');
+                    ctx.fillStyle = colour('--ink-secondary');
                     ctx.lineWidth = 2;
                     ctx.setLineDash([6, 4]);
                     ctx.beginPath();
@@ -170,34 +186,38 @@
             };
 
             Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
-            Chart.defaults.color = '#52514e';
+            Chart.defaults.color = colour('--ink-secondary');
 
-            new Chart(document.getElementById('weightChart'), {
+            const weightChart = new Chart(document.getElementById('weightChart'), {
                 type: 'bar',
                 data: {
                     //Two-line labels: the date, then the aircraft
                     labels: flightDates.map((date, i) => [date, flightTails[i]]),
                     datasets: [
-                        {label: 'Passed', data: weightsFor('PASS'), backgroundColor: '#1B3A5C'},
-                        {label: 'Failed', data: weightsFor('FAIL'), backgroundColor: '#d03b3b'}
+                        {label: 'Passed', data: weightsFor('PASS'), backgroundColor: colour('--main-color-primary')},
+                        {label: 'Failed', data: weightsFor('FAIL'), backgroundColor: colour('--critical')}
                     ]
                 },
                 options: {
                     maintainAspectRatio: false,
+                    //Drawn complete straight away, so a printout never catches the bars half grown
+                    animation: false,
+                    //Room on the right so the end of the "Max gross" label isn't cut off
+                    layout: {padding: {right: 8}},
                     //Thin bars, rounded at the top and square on the baseline
                     datasets: {bar: {skipNull: true, maxBarThickness: 24, borderRadius: 4, borderSkipped: 'start'}},
                     scales: {
-                        x: {grid: {display: false}, border: {color: '#c3c2b7'}, ticks: {color: '#898781'}},
+                        x: {grid: {display: false}, border: {color: colour('--border')}, ticks: {color: colour('--ink-muted')}},
                         y: {
                             beginAtZero: true,
                             suggestedMax: MAX_GROSS_WEIGHT * 1.1,
-                            grid: {color: '#e1e0d9'},
+                            grid: {color: colour('--hairline')},
                             border: {display: false},
-                            ticks: {color: '#898781', callback: value => value.toLocaleString()}
+                            ticks: {color: colour('--ink-muted'), callback: value => value.toLocaleString()}
                         }
                     },
                     plugins: {
-                        //The legend is HTML above the chart (rpt-legend)
+                        //The legend is HTML above the chart (.legend)
                         legend: {display: false},
                         tooltip: {
                             callbacks: {
@@ -209,10 +229,14 @@
                 },
                 plugins: [maxGrossLine]
             });
+
+            //Printing: redraw the chart to fit a landscape page, then back to the screen size
+            window.addEventListener('beforeprint', () => weightChart.resize(900, 240));
+            window.addEventListener('afterprint', () => weightChart.resize());
         </script>
     </div>
-</div>
+</main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

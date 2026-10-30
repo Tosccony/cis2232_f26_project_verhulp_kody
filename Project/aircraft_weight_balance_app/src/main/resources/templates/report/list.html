@@ -1,27 +1,24 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/head :: head">
-        <title id="pageTitle" th:text="${session.title}">Reports</title>
-    </head>
-    <body>
-        <nav th:replace="fragments/navHeader :: navbar"></nav>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Reports')}"></head>
+<body>
+<header th:replace="~{fragments/navHeader :: navbar('reports')}"></header>
 
-        <!--Styles are the rpt- classes at the end of styles.css-->
-        <div class="rpt-page">
-            <div class="rpt-header">
-                <h2 class="title is-2">Reports</h2>
-                <div class="rpt-lede">Choose a report and enter its criteria. The results are shown on screen and saved to a file.</div>
-            </div>
+<main class="app-main">
+    <div class="page-header">
+        <h1 class="page-title">Reports</h1>
+        <p class="page-lede">Choose a report and enter its criteria. The results are shown on screen and saved to a file.</p>
+    </div>
 
-            <div class="rpt-list">
-                <a class="rpt-card rpt-link-card" th:href="@{/report/loadsheet/history}">
-                    <div class="rpt-card-title" th:text="#{label.report.loading.history}">Aircraft Loading History</div>
-                    <div class="rpt-card-caption" th:text="#{label.report.loading.history.description}">description</div>
-                    <div class="rpt-link-cta">Open report <i class="fas fa-arrow-right"></i></div>
-                </a>
-            </div>
-        </div>
+    <div class="link-grid">
+        <a class="card link-card" th:href="@{/report/loadsheet/history}">
+            <div class="card-title" th:text="#{label.report.loading.history}">Aircraft Loading History</div>
+            <div class="card-caption" th:text="#{label.report.loading.history.description}">description</div>
+            <div class="link-cta">Open report <i class="fas fa-arrow-right"></i></div>
+        </a>
+    </div>
+</main>
 
-        <footer th:replace="fragments/footer :: footer"></footer>
-    </body>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
 </html>

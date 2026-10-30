@@ -1,7 +1,5 @@
 package ca.hccis.loadsheet.controllers;
 
-import ca.hccis.loadsheet.util.CisUtility;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,12 +19,7 @@ public class BaseController {
      * @author BJM
      */
     @RequestMapping("/")
-    public String home(HttpSession session) {
-
-        //BJM 20200602 Issue#1 Set the current date in the session
-        String currentDate = CisUtility.getCurrentDate("yyyy-MM-dd");
-        session.setAttribute("currentDate", currentDate);
-
+    public String home() {
         return "index";
     }
 
