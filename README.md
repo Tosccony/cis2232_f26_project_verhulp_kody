@@ -76,7 +76,7 @@ Summary: the criteria used, the number of flights, and how many PASS and FAIL<br
 Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a dashed line at the 2550 lb maximum gross weight<br/>
 No data: "No load sheets match those criteria"<br/>
 From after To: "From must be on or before To." and the search isn't run<br/>
-File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`: the criteria on the first line, then one load sheet per line. The results page shows where the file was saved<br/>
+File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`: the criteria on the first line, then one load sheet per line. A pop-up in the bottom-right corner shows the file name and folder, with a Copy path button; after a few seconds it tucks into a small "Report saved" tab that opens it again<br/>
 Print: the results page has a Print button (landscape; the summary, chart and table without the menu or search form)<br/>
 <br/>
 Examples with the sample data:

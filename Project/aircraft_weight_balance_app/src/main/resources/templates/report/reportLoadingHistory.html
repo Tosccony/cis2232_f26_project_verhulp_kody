@@ -89,12 +89,56 @@
             </button>
         </div>
 
-        <div class="file-note no-print" th:if="${reportFile != null}">
-            <i class="fas fa-file-alt"></i><span>Saved to <code th:text="${reportFile}">c:\cis2232\AircraftLoadingHistory_20261030141502.txt</code></span>
+        <!--Report file toast: slides up in the bottom right, then tucks into a small tab that opens it again.
+            If the file couldn't be saved it's red and stays open.-->
+        <div class="toast no-print is-open" id="fileToast" th:classappend="${reportSaved} ? '' : 'toast-error'">
+            <button type="button" class="toast-tab" aria-controls="fileToastPanel" aria-expanded="true">
+                <i th:class="${reportSaved} ? 'fas fa-check-circle icon-good' : 'fas fa-exclamation-triangle icon-critical'"></i>
+                <span th:text="${reportSaved} ? 'Report saved' : 'Report not saved'">Report saved</span>
+            </button>
+            <div class="toast-panel" id="fileToastPanel" role="status">
+                <div class="toast-head">
+                    <i th:class="${reportSaved} ? 'fas fa-check-circle icon-good' : 'fas fa-exclamation-triangle icon-critical'"></i>
+                    <span th:text="${reportSaved} ? 'Report saved' : 'Report not saved'">Report saved</span>
+                    <button type="button" class="toast-close" aria-label="Hide">&times;</button>
+                </div>
+                <th:block th:if="${reportSaved}">
+                    <div class="toast-file" th:text="${reportFileName}">AircraftLoadingHistory_20261030141502.txt</div>
+                    <div class="toast-folder" th:text="'in ' + ${reportFolder}">in c:\cis2232</div>
+                    <button type="button" class="btn btn-secondary btn-small toast-copy" th:data-path="${reportFile}">
+                        <i class="far fa-copy"></i><span>Copy path</span>
+                    </button>
+                </th:block>
+                <div class="toast-folder" th:unless="${reportSaved}" th:text="#{error.message.report.file}">The report couldn't be saved to a file.</div>
+            </div>
         </div>
-        <div class="file-note file-note-error no-print" th:unless="${reportFile != null}">
-            <i class="fas fa-exclamation-triangle"></i><span th:text="#{error.message.report.file}">The report couldn't be saved to a file.</span>
-        </div>
+        <script>
+            (() => {
+                const toast = document.getElementById('fileToast');
+                const tab = toast.querySelector('.toast-tab');
+                const setOpen = open => {
+                    toast.classList.toggle('is-open', open);
+                    tab.setAttribute('aria-expanded', open);
+                };
+                tab.addEventListener('click', () => setOpen(true));
+                toast.querySelector('.toast-close').addEventListener('click', () => setOpen(false));
+
+                //A saved report tucks away after a few seconds, unless the mouse or keyboard is on it
+                if (!toast.classList.contains('toast-error')) {
+                    const timer = setTimeout(() => setOpen(false), 6000);
+                    ['mouseenter', 'focusin'].forEach(event => toast.addEventListener(event, () => clearTimeout(timer)));
+                }
+
+                //The clipboard only works on localhost or https; without it there's no Copy button
+                const copy = toast.querySelector('.toast-copy');
+                if (copy && !navigator.clipboard) {
+                    copy.remove();
+                } else if (copy) {
+                    copy.addEventListener('click', () => navigator.clipboard.writeText(copy.dataset.path)
+                        .then(() => copy.querySelector('span').textContent = 'Copied'));
+                }
+            })();
+        </script>
 
         <div class="tiles">
             <div class="card">

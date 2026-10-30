@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -85,12 +87,19 @@ public class ReportController {
         reportInput.setLoadSheets(loadSheets);
 
         //Also write the report to a file: the criteria on the first line, then one line per load sheet.
-        //The page shows where it was saved (null = it couldn't be saved).
+        //The page shows where it was saved: the file name and folder separately, and the full path to copy.
         if (!loadSheets.isEmpty()) {
             ArrayList<Object> reportLines = new ArrayList<>();
             reportLines.add(reportInput.getCriteriaSummary());
             reportLines.addAll(loadSheets);
-            model.addAttribute("reportFile", CisUtilityFile.writeReportToFile("AircraftLoadingHistory", reportLines));
+            String reportFile = CisUtilityFile.writeReportToFile("AircraftLoadingHistory", reportLines);
+            model.addAttribute("reportSaved", reportFile != null);
+            if (reportFile != null) {
+                Path path = Paths.get(reportFile);
+                model.addAttribute("reportFile", reportFile);
+                model.addAttribute("reportFileName", path.getFileName().toString());
+                model.addAttribute("reportFolder", path.getParent().toString());
+            }
         }
 
         //@ModelAttribute has already put reportInput in the model for the view
