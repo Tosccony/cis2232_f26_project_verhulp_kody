@@ -58,4 +58,19 @@ loadStatus = PASS when totalWeight is 2550 or less, baggageWeight is 120 or less
 ---
 ## Report Details ##
 
-To be determined in future sprint
+**Aircraft Loading History**<br/>
+Shows every load sheet for one aircraft between two dates, so the club can see which aircraft are loaded near their limits and which flights were refused.
+
+| Input | Format | Example |
+|---|---|---|
+| tailNumber | Aircraft registration (dashes and lower case are accepted) | CGKDV or C-GKDV |
+| startDate | yyyy-MM-dd | 2026-09-01 |
+| endDate | yyyy-MM-dd (flights on this date are included) | 2026-09-30 |
+
+Displayed for each matching load sheet, oldest flight first: flightDate, tailNumber, pilotName, frontSeatWeight, rearSeatWeight, baggageWeight, fuelLoaded, totalWeight, centreOfGravity, loadStatus<br/>
+Summary: number of flights, and how many PASS and FAIL<br/>
+Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a line at the 2550 lb maximum gross weight<br/>
+No data: "No load sheets found for that aircraft and date range"<br/>
+File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`, one load sheet per line<br/>
+<br/>
+Example with the sample data: CGKDV from 2026-09-01 to 2026-09-30 shows 3 flights (2 PASS, 1 FAIL).
