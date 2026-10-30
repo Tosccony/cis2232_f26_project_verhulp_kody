@@ -511,6 +511,16 @@ Arrange invoice list tittle and add button
     color: var(--rpt-ink);
 }
 
+.rpt-tile-note {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--rpt-ink-secondary);
+}
+
+.rpt-section {
+    margin-bottom: 32px;
+}
+
 .rpt-icon-good {
     color: var(--rpt-good);
 }

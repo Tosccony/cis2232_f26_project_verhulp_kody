@@ -19,31 +19,13 @@
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
             <div class="navbar-item has-dropdown is-hoverable">
-                <a th:href="@{/skillsassessmentsquashtechnical}" href="/skillsassessmentsquashtechnical/" class="accent navbar-link">Assessments</a>
+                <a th:href="@{/report}" href="/report" class="accent navbar-link">Reports</a>
                 <div class="accent-background navbar-dropdown">
-                    <a th:href="@{/skillsassessmentsquashtechnical}" class="accent navbar-item">View</a>
-                    <a th:href="@{/skillsassessmentsquashtechnical/list/edit}" class="accent navbar-item">List Edit</a>
+                    <a th:href="@{/report/loadsheet/history}" class="accent navbar-item"
+                       th:text="#{label.report.loading.history}">Loading history report</a>
                 </div>
             </div>
-            <div class="navbar-end">
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a th:href="@{/report}" href="/about" class="accent navbar-link">Reports</a>
-                    <div class="accent-background navbar-dropdown">
-                        <a th:href="@{/report/loadsheet/history}" class="accent navbar-item"
-                           th:text="#{label.report.loading.history}">Loading history report</a>
-                    </div>
-                </div>
-                <div class="navbar-end">
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a th:href="@{/about}" href="/about" class="accent navbar-link">Other</a>
-                        <div class="accent-background navbar-dropdown">
-                            <a th:href="@{/about}" href="/about" class="accent navbar-item">About</a>
-                            <hr class="navbar-divider">
-                            <a th:href="@{/pirate}" href="/pirate" class="accent navbar-item">Pirate</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a th:href="@{/about}" href="/about" class="accent navbar-item">About</a>
         </div>
     </div>
 </nav>
