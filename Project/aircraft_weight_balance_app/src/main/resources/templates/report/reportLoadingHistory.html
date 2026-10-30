@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title id="pageTitle">Report</title>
+</head>
+<body>
+<style scoped="scoped">input:not(.hidden) {
+    display: inline-block;
+    float: right
+}
+
+label {
+    margin-right: 8px
+}
+
+th, td {
+    padding: 4px 8px !important
+}
+
+.fail {
+    color: #C0392B !important;
+    font-weight: bold
+}</style>
+<nav th:replace="fragments/navHeader :: navbar"></nav>
+
+
+<div class="container has-text-centered">
+    <h2 class="title is-2" th:text="#{label.report.loading.history}">_</h2>
+
+    <form th:action="@{/report/loadsheet/history/submit}" method="post" class="wbb"
+          style="display:inline-block;text-align:left!important">
+        <label for="tailNumber">Tail Number: </label><br/>
+        <input type="text" maxlength="10" placeholder="CGKDV" required th:field="${reportInput.tailNumber}"><br/>
+
+        <label for="startDate">Start Date: </label><br/>
+        <input type="date" required th:field="${reportInput.startDate}"><br/>
+
+        <label for="endDate">End Date: </label><br/>
+        <input type="date" required th:field="${reportInput.endDate}"><br/>
+
+        <br/>
+        <button style="display:block;margin-top:24px!important" class="centered">Submit</button>
+    </form>
+
+    <!--loadSheets is null before the first submit, and empty when nothing matched-->
+    <p style="color: var(--main-color-text) !important" th:if="${reportInput.loadSheets != null and #lists.isEmpty(reportInput.loadSheets)}"
+       th:text="#{error.message.no.data.found.loading.history}">not found</p>
+
+    <div th:if="${not #lists.isEmpty(reportInput.loadSheets)}"
+         th:with="flights=${#lists.size(reportInput.loadSheets)},
+                  passed=${reportInput.loadSheets.?[loadStatus == 'PASS'].size()}">
+
+        <p style="color: var(--main-color-text) !important" th:text="|${reportInput.tailNumber} from ${reportInput.startDate} to ${reportInput.endDate}. Flights: ${flights} (${passed} PASS, ${flights - passed} FAIL)|">summary</p>
+
+        <table class="wbb centered">
+            <thead>
+            <tr>
+                <th>Flight Date</th>
+                <th>Tail Number</th>
+                <th>Pilot</th>
+                <th>Front Seats (lb)</th>
+                <th>Rear Seats (lb)</th>
+                <th>Baggage (lb)</th>
+                <th>Fuel (US gal)</th>
+                <th>Total Weight (lb)</th>
+                <th>CG (in)</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${reportInput.loadSheets}">
+                <td th:text="${item.flightDate}"></td>
+                <td th:text="${item.tailNumber}"></td>
+                <td th:text="${item.pilotName}"></td>
+                <td th:text="${item.frontSeatWeight}"></td>
+                <td th:text="${item.rearSeatWeight}"></td>
+                <td th:text="${item.baggageWeight}"></td>
+                <td th:text="${item.fuelLoaded}"></td>
+                <td th:text="${item.totalWeight}"></td>
+                <td th:text="${#numbers.formatDecimal(item.centreOfGravity, 1, 2)}"></td>
+                <td th:text="${item.loadStatus}" th:classappend="${item.loadStatus == 'FAIL'} ? 'fail'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--Light card like the form and table, so the navy bars and chart text show on the navy page-->
+        <div class="wbb" style="max-width:700px;margin:24px auto">
+            <canvas id="weightChart"></canvas>
+        </div>
+
+        <script th:inline="javascript">
+            const flightDates = [[${reportInput.loadSheets.![flightDate]}]];
+            const totalWeights = [[${reportInput.loadSheets.![totalWeight]}]];
+            const loadStatuses = [[${reportInput.loadSheets.![loadStatus]}]];
+
+            new Chart(document.getElementById('weightChart'), {
+                type: 'bar',
+                data: {
+                    labels: flightDates,
+                    datasets: [{
+                        label: 'Total Weight (lb)',
+                        data: totalWeights,
+                        //PASS flights in the project navy, FAIL flights in red
+                        backgroundColor: loadStatuses.map(status => status === 'PASS' ? '#1B3A5C' : '#C0392B')
+                    }, {
+                        type: 'line',
+                        label: 'Maximum Gross Weight (2550 lb)',
+                        data: flightDates.map(() => 2550),
+                        borderColor: '#C0392B',
+                        pointRadius: 0
+                    }]
+                }
+            });
+        </script>
+    </div>
+
+</div>
+
+<br></br>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,9 +1,9 @@
 package ca.hccis.squash.controllers;
 
-import ca.hccis.squash.bo.SkillsAssessmentSquashTechnicalBO;
-import ca.hccis.squash.dao.SkillsAssessmentSquashTechnicalDAO;
-import ca.hccis.squash.entity.ReportSquash;
-import ca.hccis.squash.jpa.entity.SkillsAssessmentSquashTechnical;
+import ca.hccis.squash.dao.LoadSheetDAO;
+import ca.hccis.squash.entity.LoadSheet;
+import ca.hccis.squash.entity.ReportLoadSheet;
+import ca.hccis.squash.util.CisUtilityFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -44,99 +45,50 @@ public class ReportController {
     }
 
     /**
-     * Method to send user to the athlete/assessor name report.
+     * Send the user to the aircraft loading history report input view.
      *
      * @param model
-     * @return view for list
-     * @author BJM
-     * @since 2025-10-06
+     * @return view for the report
+     * @author Kody Verhulp
+     * @since 20261030
      */
-    @RequestMapping("/squash/name")
-    public String reportSquashName(Model model) {
-        logger.info("Running the reports controller squash name method");
-        model.addAttribute("reportInput",new ReportSquash());
-        return "report/reportSquashName";
+    @RequestMapping("/loadsheet/history")
+    public String reportLoadingHistory(Model model) {
+        logger.info("Running the reports controller loading history method");
+        model.addAttribute("reportInput", new ReportLoadSheet());
+        return "report/reportLoadingHistory";
     }
 
     /**
-     * Method to send user to the score name report.
+     * Process the aircraft loading history report. The load sheets are selected using jdbc,
+     * written to a file, and shown on the same view as the input form.
      *
-     * @param model
-     * @return view for list
-     * @author BJM
-     * @since 2025-10-09
+     * @param reportInput Object containing the inputs for the report
+     * @return view to show the report
+     * @throws SQLException if the database can't be read (shown on the error page)
+     * @author Kody Verhulp
+     * @since 20261030
      */
-    @RequestMapping("/squash/score")
-    public String reportSquashScore(Model model) {
-        logger.info("Running the reports controller squash score method");
-        model.addAttribute("reportInput",new ReportSquash());
-        return "report/reportSquashScore";
-    }
+    @RequestMapping("/loadsheet/history/submit")
+    public String reportLoadingHistorySubmit(@ModelAttribute("reportInput") ReportLoadSheet reportInput)
+            throws SQLException {
 
+        //Tail numbers are stored in upper case without the dash (C-GKDV is saved as CGKDV)
+        reportInput.setTailNumber(reportInput.getTailNumber().replace("-", "").strip().toUpperCase());
+        logger.info("Loading history report for " + reportInput.getTailNumber());
 
-    /**
-     * Process the report - name
-     *
-     * @param model
-     * @param reportSquash Object containing inputs for the report
-     * @return view to show report
-     * @author BJM
-     * @since 2025-10-06
-     */
-    @RequestMapping("/squash/name/submit")
-    public String reportSquashNameSubmit(Model model, @ModelAttribute("reportInput") ReportSquash reportSquash) {
+        LoadSheetDAO loadSheetDAO = new LoadSheetDAO();
+        ArrayList<LoadSheet> loadSheets = loadSheetDAO.selectAllByTailNumberAndDates(
+                reportInput.getTailNumber(), reportInput.getStartDate(), reportInput.getEndDate());
+        reportInput.setLoadSheets(loadSheets);
 
-        System.out.println("Name from input form:"+reportSquash.getName());
-
-        //Write some model code to go to the db and get the appropriate assessments
-        //Add them to a collection in the ReportSquash class
-        SkillsAssessmentSquashTechnicalBO skillsAssessmentSquashTechnicalBO = new SkillsAssessmentSquashTechnicalBO();
-        ArrayList<SkillsAssessmentSquashTechnical> theList = skillsAssessmentSquashTechnicalBO.processSelectAllByAthleteAssessorName(reportSquash.getName());
-        reportSquash.setSkillsAssessmentSquashTechnicals(theList);
-
-        //Add a message in case the report does not contain any data
-        if (theList != null && theList.isEmpty()) {
-            model.addAttribute("message", "No assessments found for that name");
-            System.out.println("BJM - no data found");
+        //Also write the report to a file
+        if (!loadSheets.isEmpty()) {
+            CisUtilityFile.writeReportToFile("AircraftLoadingHistory", loadSheets);
         }
 
-        //Put object in model so it can be used on the view (html)
-        model.addAttribute("reportInput", reportSquash);
-
-        return "report/reportSquashName"; //Send user to another view.
+        //@ModelAttribute has already put reportInput in the model for the view
+        return "report/reportLoadingHistory";
     }
-
-    /**
-     * Process the report - name
-     *
-     * @param model
-     * @param reportSquash Object containing inputs for the report
-     * @return view to show report
-     * @author BJM
-     * @since 2025-10-06
-     */
-    @RequestMapping("/squash/score/submit")
-    public String reportSquashScoreSubmit(Model model, @ModelAttribute("reportInput") ReportSquash reportSquash) {
-
-        System.out.println("Min from input form:"+reportSquash.getMinScore());
-
-        //Write some model code to go to the db and get the appropriate assessments
-        //Add them to a collection in the ReportSquash class
-        SkillsAssessmentSquashTechnicalDAO squashDAO = new SkillsAssessmentSquashTechnicalDAO();
-        ArrayList<SkillsAssessmentSquashTechnical> theList = squashDAO.selectAllByScoreMinMax(reportSquash.getMinScore(), reportSquash.getMaxScore());
-        reportSquash.setSkillsAssessmentSquashTechnicals(theList);
-
-        //Add a message in case the report does not contain any data
-        if (theList != null && theList.isEmpty()) {
-            model.addAttribute("message", "No assessments found for that name");
-            System.out.println("BJM - no data found");
-        }
-
-        //Put object in model so it can be used on the view (html)
-        model.addAttribute("reportInput", reportSquash);
-
-        return "report/reportSquashScore"; //Send user to another view.
-    }
-
 
 }
