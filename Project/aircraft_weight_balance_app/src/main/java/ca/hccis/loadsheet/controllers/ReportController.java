@@ -73,16 +73,24 @@ public class ReportController {
         logger.info(reportInput.getCriteriaSummary());
 
         LoadSheetDAO loadSheetDAO = new LoadSheetDAO();
-        ArrayList<LoadSheet> loadSheets = loadSheetDAO.selectAllByCriteria(reportInput);
-        reportInput.setLoadSheets(loadSheets);
         model.addAttribute("tailNumbers", loadSheetDAO.selectTailNumbers());
 
-        //Also write the report to a file: the criteria on the first line, then one line per load sheet
+        //A From date after the To date can't match anything: say so instead of searching
+        if (!reportInput.isDateRangeValid()) {
+            model.addAttribute("dateRangeError", true);
+            return "report/reportLoadingHistory";
+        }
+
+        ArrayList<LoadSheet> loadSheets = loadSheetDAO.selectAllByCriteria(reportInput);
+        reportInput.setLoadSheets(loadSheets);
+
+        //Also write the report to a file: the criteria on the first line, then one line per load sheet.
+        //The page shows where it was saved (null = it couldn't be saved).
         if (!loadSheets.isEmpty()) {
             ArrayList<Object> reportLines = new ArrayList<>();
             reportLines.add(reportInput.getCriteriaSummary());
             reportLines.addAll(loadSheets);
-            CisUtilityFile.writeReportToFile("AircraftLoadingHistory", reportLines);
+            model.addAttribute("reportFile", CisUtilityFile.writeReportToFile("AircraftLoadingHistory", reportLines));
         }
 
         //@ModelAttribute has already put reportInput in the model for the view

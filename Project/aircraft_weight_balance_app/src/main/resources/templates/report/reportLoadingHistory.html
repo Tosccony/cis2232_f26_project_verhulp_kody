@@ -41,17 +41,31 @@
         </div>
         <div class="field">
             <label for="startDate">From</label>
-            <input type="date" th:field="${reportInput.startDate}">
+            <input type="date" th:field="${reportInput.startDate}" th:attr="aria-invalid=${dateRangeError} ? 'true'">
         </div>
         <div class="field">
             <label for="endDate">To</label>
-            <input type="date" th:field="${reportInput.endDate}">
+            <input type="date" th:field="${reportInput.endDate}" th:attr="aria-invalid=${dateRangeError} ? 'true'">
         </div>
+        <p class="form-error" role="alert" th:if="${dateRangeError}">
+            <i class="fas fa-exclamation-circle"></i><span th:text="#{error.message.date.range}">From must be on or before To.</span>
+        </p>
         <div class="actions">
             <button type="submit" class="btn btn-primary">Run report</button>
             <a class="btn btn-secondary" th:href="@{/report/loadsheet/history}">Clear</a>
         </div>
     </form>
+
+    <script>
+        //Safari fills an empty date field with today's date as a hint: grey it like "Any pilot"
+        //until a date is picked, so it doesn't look like a date range was chosen
+        document.querySelectorAll('.field input[type=date]').forEach(input => {
+            const update = () => input.classList.toggle('is-empty', !input.value);
+            input.addEventListener('input', update);
+            input.addEventListener('change', update);
+            update();
+        });
+    </script>
 
     <!--loadSheets is null before the first submit, and empty when nothing matched-->
     <div class="card empty-state"
@@ -73,6 +87,13 @@
             <button type="button" class="btn btn-secondary no-print" onclick="window.print()">
                 <i class="fas fa-print"></i>Print
             </button>
+        </div>
+
+        <div class="file-note no-print" th:if="${reportFile != null}">
+            <i class="fas fa-file-alt"></i><span>Saved to <code th:text="${reportFile}">c:\cis2232\AircraftLoadingHistory_20261030141502.txt</code></span>
+        </div>
+        <div class="file-note file-note-error no-print" th:unless="${reportFile != null}">
+            <i class="fas fa-exclamation-triangle"></i><span th:text="#{error.message.report.file}">The report couldn't be saved to a file.</span>
         </div>
 
         <div class="tiles">

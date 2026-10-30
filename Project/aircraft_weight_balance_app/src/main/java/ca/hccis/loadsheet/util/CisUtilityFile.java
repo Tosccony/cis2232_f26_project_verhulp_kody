@@ -14,7 +14,12 @@ public class CisUtilityFile {
     //inside the project, which .gitignore leaves out.
     public static final String FOLDER_NAME = "c:/cis2232/";
 
-    public static void writeReportToFile(String fileName, ArrayList theObjects) {
+    /**
+     * Write each object's toString() as one line of a new file, named fileName plus the date and time.
+     *
+     * @return the full path of the file (shown on the report page), or null if it couldn't be written
+     */
+    public static String writeReportToFile(String fileName, ArrayList theObjects) {
 
         String fullName = FOLDER_NAME + fileName + CisUtility.getCurrentDate("_yyyyMMddHHmmss") + ".txt";
         Path path = Paths.get(FOLDER_NAME);
@@ -32,7 +37,8 @@ public class CisUtilityFile {
             }
         } catch (IOException e) {
             System.out.println("CisUtilityFile exception with file: " + fullName);
+            return null;
         }
-
+        return Paths.get(fullName).toAbsolutePath().toString();
     }
 }

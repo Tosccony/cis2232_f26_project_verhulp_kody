@@ -265,6 +265,33 @@ a:focus-visible, button:focus-visible {
     -webkit-text-fill-color: var(--ink);
 }
 
+/*Hints are all the same grey: placeholders, and empty date fields (is-empty is set by the report page)*/
+.field input::placeholder {
+    color: var(--ink-muted);
+    opacity: 1;
+}
+
+.field input[type="date"].is-empty::-webkit-datetime-edit-year-field,
+.field input[type="date"].is-empty::-webkit-datetime-edit-month-field,
+.field input[type="date"].is-empty::-webkit-datetime-edit-day-field {
+    -webkit-text-fill-color: var(--ink-muted);
+}
+
+.field input[aria-invalid="true"] {
+    border-color: var(--critical);
+}
+
+/*Full width, so it sits on its own line above the buttons*/
+.form-error {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--critical-text);
+}
+
 .field input:focus,
 .field select:focus {
     outline: none;
@@ -294,6 +321,27 @@ a:focus-visible, button:focus-visible {
 
 .results-meta {
     color: var(--ink-secondary);
+}
+
+/*Where the report file was saved (or that it couldn't be)*/
+.file-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: -4px 0 16px;
+    font-size: 14px;
+    color: var(--ink-secondary);
+}
+
+.file-note code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    color: var(--ink);
+    word-break: break-all;
+}
+
+.file-note-error {
+    color: var(--critical-text);
 }
 
 .tiles {

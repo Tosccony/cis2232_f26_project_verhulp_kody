@@ -105,6 +105,18 @@ public class ReportLoadSheet {
     }
 
     /**
+     * A From date after the To date can't match any load sheet.
+     * The dates are yyyy-MM-dd text, which sorts in date order, so compareTo works.
+     *
+     * @return false only when both dates are filled in and From is after To
+     * @author Kody Verhulp
+     * @since 20261030
+     */
+    public boolean isDateRangeValid() {
+        return startDate.isBlank() || endDate.isBlank() || startDate.compareTo(endDate) <= 0;
+    }
+
+    /**
      * Every criterion in one line. Written as the first line of the report file.
      *
      * @return the aircraft and the other criteria
