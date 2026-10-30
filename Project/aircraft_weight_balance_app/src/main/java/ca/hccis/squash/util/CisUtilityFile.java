@@ -10,11 +10,13 @@ import java.util.ArrayList;
 
 public class CisUtilityFile {
 
-    public static final String FOLDER_NAME = "c:\\CIS2232\\";
+    //Forward slashes work on Windows (c:\cis2232\). On a Mac this is a c:/cis2232/ folder
+    //inside the project, which .gitignore leaves out.
+    public static final String FOLDER_NAME = "c:/cis2232/";
 
     public static void writeReportToFile(String fileName, ArrayList theObjects) {
 
-        String fullName = FOLDER_NAME + fileName + CisUtility.getCurrentDate("_yyyyMMddhhmmss") + ".txt";
+        String fullName = FOLDER_NAME + fileName + CisUtility.getCurrentDate("_yyyyMMddHHmmss") + ".txt";
         Path path = Paths.get(FOLDER_NAME);
         try {
             Files.createDirectories(path);
@@ -22,22 +24,14 @@ public class CisUtilityFile {
             System.out.println("BJM-CisUtilityFile-Error creating directories");
         }
 
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(fullName, true));
-
+        //try-with-resources closes the writer (the old finally crashed when the file couldn't be opened)
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fullName, true))) {
             for (Object current : theObjects) {
                 writer.write(current.toString());
                 writer.newLine();
             }
         } catch (IOException e) {
             System.out.println("CisUtilityFile exception with file: " + fullName);
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("CisUtilityFile exception with file: " + fullName);
-            }
         }
 
     }
