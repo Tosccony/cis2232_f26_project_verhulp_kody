@@ -1,12 +1,14 @@
 # Project: Aircraft Weight and Balance Sheet #
 
+![The Aircraft Loading History report: search form, summary tiles and the total weight chart](docs/aircraft-loading-history.png)
+
 ---
 ## Development Team ##
-Business Client:  Ben
+Business Client:  Ben Proulx
 <br/>
 Lead Developer:  Kody Verhulp
 <br/>
-Quality Control:  Nick
+Quality Control:  Nick Brown
 <br/>
 
 ---
@@ -73,7 +75,9 @@ Displayed for each matching load sheet, oldest flight first: flightDate, tailNum
 Summary: the criteria used, the number of flights, and how many PASS and FAIL<br/>
 Chart: totalWeight for each flight as a bar (PASS navy, FAIL red), with a dashed line at the 2550 lb maximum gross weight<br/>
 No data: "No load sheets match those criteria"<br/>
-File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`: the criteria on the first line, then one load sheet per line<br/>
+From after To: "From must be on or before To." and the search isn't run<br/>
+File: the results are also saved to `c:\cis2232\` as `AircraftLoadingHistory_yyyyMMddHHmmss.txt`: the criteria on the first line, then one load sheet per line. The results page shows where the file was saved<br/>
+Print: the results page has a Print button (landscape; the summary, chart and table without the menu or search form)<br/>
 <br/>
 Examples with the sample data:
 
@@ -83,3 +87,4 @@ Examples with the sample data:
 | All aircraft, FAIL | 4 flights (0 PASS, 4 FAIL) |
 | All aircraft, pilot "alex" | 2 flights (1 PASS, 1 FAIL) |
 | Everything blank | all 7 load sheets |
+| From 2026-09-30, To 2026-09-01 | "From must be on or before To." |
