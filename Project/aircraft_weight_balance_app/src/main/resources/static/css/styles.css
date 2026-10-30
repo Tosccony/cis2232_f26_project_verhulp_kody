@@ -257,6 +257,14 @@ a:focus-visible, button:focus-visible {
     cursor: pointer;
 }
 
+/*Safari shows today's date in an empty date field in light blue, set with
+  -webkit-text-fill-color (plain color doesn't change it). Same ink as the other fields.*/
+.field input[type="date"]::-webkit-datetime-edit-year-field,
+.field input[type="date"]::-webkit-datetime-edit-month-field,
+.field input[type="date"]::-webkit-datetime-edit-day-field {
+    -webkit-text-fill-color: var(--ink);
+}
+
 .field input:focus,
 .field select:focus {
     outline: none;
